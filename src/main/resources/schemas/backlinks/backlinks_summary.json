@@ -1,0 +1,19 @@
+{
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "Domain or subdomain to analyze",
+      "minLength": 1,
+      "maxLength": 255
+    },
+    "searchType": {
+      "type": "string",
+      "description": "Type of search query",
+      "enum": ["domain", "domain_with_subdomains"],
+      "default": "domain"
+    }
+  },
+  "required": ["query"],
+  "additionalProperties": false
+}

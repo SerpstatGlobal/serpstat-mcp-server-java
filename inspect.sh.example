@@ -1,0 +1,4 @@
+#!/bin/bash
+# Example script to run the Model Context Protocol Inspector with Serpstat API token
+export SERPSTAT_API_TOKEN=YOUR_API_TOKEN_HERE
+npx @modelcontextprotocol/inspector java -jar /path/to/build/serpstat-mcp-server-java-0.0.1.jar

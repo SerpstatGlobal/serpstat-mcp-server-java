@@ -1,0 +1,635 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "4.0",
+    "title": "Credits API",
+    "description": "### Current version: 4\n\nhttps://api.serpstat.com/v4 — Endpoint URL, through which all requests should be processed.\n\n### API protocol\n\n- Our API protocol is [**JSON-RPC 2.0**](https://www.jsonrpc.org/specification).\n\n### Requests\n\n- All requests should be sent via **POST** method.\n- All request parameters must be set via POST request body in **JSON** format.\n- Each request should contain a `method` name parameter corresponding to the API method (case-sensitive).\n\n### Authentication\n\n- Tokens are used for authentication. Create a token on [your profile page](https://serpstat.com/users/profile/). \n- `token` is required for all API requests.\n- Api token is available for almost paid and trial plans that have API feature enabled.\n\n### Pagination\n\nFor pagination, use the parameters:\n- `size`: number of results per page (default 100, maximum 1000);\n- `page`: page number (default is 1st page).\n\nPlease note: not all methods are supporting pagination.\n\n\n### Filters\n\nFilters can be applied to each method, most of them are specific for the method you used.\n`filters` object are optional for most methods.\n\n### Responses\n\n- All responses are in **JSON** format.\n- All responses have 200 HTTP status, even erroneous ones. In case of error, the response contains an `error` object instead of `result`.\n\n\n### API credits (limits)\n\nWhen calculating the used credits, your pricing plan's API requests are taken into account, including identical requests and requests for export.\n\n### Request rates\n\nMost subscription plans are limited to 1 request per second.\nTop-tier plans allow up to 10 requests per second.\nFor higher rate limits, contact our sales team.\nExceeding your rate limit will result in an error response.\n\n### Max results\n\nThe maximum number of results returned by each API method is limited up to 60,000 rows.\n",
+    "termsOfService": "https://serpstat.com/users/license-agreement/",
+    "contact": {
+      "url": "https://serpstat.com",
+      "email": "support@serpstat.com",
+      "name": "Support"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "name": "CC BY 4.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.serpstat.com/v4",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/#SerpstatLimitsProcedure.getAuditStats": {
+      "post": {
+        "tags": [
+          "Api credits"
+        ],
+        "summary": "getAuditStats",
+        "description": "With the `SerpstatLimitsProcedure.getAuditStats` method, check how many credits you have left.\n\n<!-- theme: success -->\n> This method doesn't spent API credits.",
+        "operationId": "post-#SerpstatLimitsProcedure.getAuditStats",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatLimitsProcedure.getAuditStats`\n",
+                    "example": "SerpstatLimitsProcedure.getAuditStats"
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": 1,
+                    "method": "SerpstatLimitsProcedure.getAuditStats"
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "1",
+                    "method": "SerpstatLimitsProcedure.getAuditStats"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "hasAuditOnePage": {
+                              "type": "boolean",
+                              "description": "`true` - Your plan has access to one page audit feature\n`false` - access to one page audit denied"
+                            },
+                            "hasAuditJsScanPage": {
+                              "type": "boolean",
+                              "description": "`true` - Your plan has access to one page audit with Javascript rendering feature \n`false` - access to one page audit with js rendering denied"
+                            },
+                            "hasAuditLimitPage": {
+                              "type": "boolean",
+                              "description": "`true` - your plan has limitation for max pages crawled during one audit scan\n`false` - no limitation for crawled pages per audit"
+                            },
+                            "maxAuditLimitPage": {
+                              "type": "integer",
+                              "description": "Max audit pages checked per audit, 0 - no limits."
+                            },
+                            "total": {
+                              "type": "integer",
+                              "description": "Total pages audit crawl limits of your subcription plan."
+                            },
+                            "used": {
+                              "type": "integer",
+                              "description": "Used audit credits"
+                            },
+                            "left": {
+                              "type": "integer",
+                              "description": "Left audit credits"
+                            }
+                          },
+                          "required": [
+                            "hasAuditOnePage",
+                            "hasAuditJsScanPage",
+                            "hasAuditLimitPage",
+                            "maxAuditLimitPage",
+                            "total",
+                            "used",
+                            "left"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "1",
+                      "result": {
+                        "data": {
+                          "hasAuditOnePage": true,
+                          "hasAuditJsScanPage": true,
+                          "hasAuditLimitPage": false,
+                          "maxAuditLimitPage": 0,
+                          "total": 100000,
+                          "used": 110,
+                          "left": 99890
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "555",
+                      "result": {
+                        "data": {
+                          "hasAuditOnePage": true,
+                          "hasAuditJsScanPage": true,
+                          "hasAuditLimitPage": false,
+                          "maxAuditLimitPage": 0,
+                          "total": 100000,
+                          "used": 1000,
+                          "left": 99000
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#SerpstatLimitsProcedure.getStats": {
+      "post": {
+        "tags": [
+          "Api credits"
+        ],
+        "summary": "getStats",
+        "description": "The `SerpstatLimitsProcedure.getStats` method is for checking the number of available and used API and Serpstat extension credits.\nPerfect to monitoring your API usage.\n\n<!-- theme: success -->\n> This method doesn't spent API credits.",
+        "operationId": "post-#SerpstatLimitsProcedure.getStats",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatLimitsProcedure.getAuditStats`",
+                    "example": "SerpstatLimitsProcedure.getStats"
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": 1,
+                    "method": "SerpstatLimitsProcedure.getStats"
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatLimitsProcedure.getStats"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "description": "Request object contains all data",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "max_lines": {
+                              "type": "integer",
+                              "description": "Max API credits available for your subcription plan per billing period. Billing period usually every 30 days."
+                            },
+                            "used_lines": {
+                              "type": "integer",
+                              "description": "Used api credits during billing period."
+                            },
+                            "left_lines": {
+                              "type": "integer",
+                              "description": "Left api credits till end of billing period."
+                            },
+                            "user_info": {
+                              "type": "object",
+                              "description": "Information about your account in Serpstat",
+                              "properties": {
+                                "user_id": {
+                                  "type": "string",
+                                  "description": "user_id - your account id. Can be used with team management api."
+                                },
+                                "ga_client_Id": {
+                                  "type": "string",
+                                  "description": "Your Google Analytics ID. "
+                                },
+                                "plan_id": {
+                                  "type": "string",
+                                  "description": "Your subscription plan id."
+                                }
+                              },
+                              "required": [
+                                "user_id",
+                                "ga_client_Id",
+                                "plan_id"
+                              ]
+                            },
+                            "plugin_limits": {
+                              "type": "object",
+                              "properties": {
+                                "hasApiPlugin": {
+                                  "type": "boolean",
+                                  "description": "`true` - your account has access to Serpstat Browser Plugin, \n`false` - access to Browser Plugin denied"
+                                },
+                                "delayBetweenRequests": {
+                                  "type": "integer",
+                                  "description": "Limitation for requests per secin for your account for Serpstat Browser Plugin"
+                                },
+                                "total": {
+                                  "type": "integer",
+                                  "description": "Total plugin credits for your account"
+                                },
+                                "used": {
+                                  "type": "integer",
+                                  "description": "Used plugin credits"
+                                },
+                                "left": {
+                                  "type": "integer",
+                                  "description": "Left plugin credits till end of billing period."
+                                }
+                              },
+                              "required": [
+                                "hasApiPlugin",
+                                "delayBetweenRequests",
+                                "total",
+                                "used",
+                                "left"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "max_lines",
+                            "used_lines",
+                            "left_lines",
+                            "user_info",
+                            "plugin_limits"
+                          ]
+                        },
+                        "summary_info": {
+                          "type": "object",
+                          "properties": {
+                            "left_lines": {
+                              "type": "integer",
+                              "description": "Left API credits till end of billing period."
+                            }
+                          },
+                          "required": [
+                            "left_lines"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "data",
+                        "summary_info"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "1",
+                      "result": {
+                        "data": {
+                          "max_lines": 10000000,
+                          "used_lines": 387,
+                          "left_lines": 9999613,
+                          "user_info": {
+                            "user_id": "565892",
+                            "ga_client_Id": "1527281284.1735325610",
+                            "plan_id": "1"
+                          },
+                          "plugin_limits": {
+                            "hasApiPlugin": true,
+                            "delayBetweenRequests": 1,
+                            "total": 100,
+                            "used": 0,
+                            "left": 100
+                          }
+                        },
+                        "summary_info": {
+                          "left_lines": 9999613
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "data": {
+                          "max_lines": 100000,
+                          "used_lines": 5,
+                          "left_lines": 999995,
+                          "user_info": {
+                            "user_id": "555",
+                            "ga_client_Id": "12434534.544545",
+                            "plan_id": "2028"
+                          },
+                          "plugin_limits": {
+                            "hasApiPlugin": true,
+                            "delayBetweenRequests": 1,
+                            "total": 10000,
+                            "used": 10,
+                            "left": 9990
+                          }
+                        },
+                        "summary_info": {
+                          "left_lines": 999995
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#SerpstatPluginProcedure.stats": {
+      "post": {
+        "tags": [
+          "Api credits"
+        ],
+        "summary": "stats",
+        "description": "The `SerpstatPluginProcedure.stats` method is for checking the amount of available and used Serpstat extension credits.\n\n<!-- theme: success -->\n> This method doesn't spent API credits.",
+        "operationId": "post-#SerpstatPluginProcedure.stats",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "shoud be exact `SerpstatPluginProcedure.stats`",
+                    "example": "SerpstatPluginProcedure.stats"
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": 1,
+                    "method": "SerpstatLimitsProcedure.getStats"
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatPluginProcedure.stats"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "plugin_limits": {
+                          "type": "object",
+                          "properties": {
+                            "hasApiPlugin": {
+                              "type": "boolean",
+                              "description": "`true` - your account has access to Serpstat Browser Plugin, \n`false` - access to Browser Plugin denied"
+                            },
+                            "delayBetweenRequests": {
+                              "type": "integer",
+                              "description": "Limitation for requests per secin for your account for Serpstat Browser Plugin"
+                            },
+                            "total": {
+                              "type": "integer",
+                              "description": "Total plugin credits for your account"
+                            },
+                            "used": {
+                              "type": "integer",
+                              "description": "Used plugin credits"
+                            },
+                            "left": {
+                              "type": "integer",
+                              "description": "Left plugin credits till end of billing period."
+                            }
+                          },
+                          "required": [
+                            "hasApiPlugin",
+                            "delayBetweenRequests",
+                            "total",
+                            "used",
+                            "left"
+                          ]
+                        },
+                        "user_info": {
+                          "type": "object",
+                          "description": "Information about your account in Serpstat",
+                          "properties": {
+                            "user_id": {
+                              "type": "string",
+                              "description": "user_id - your account id. Can be used with team management api."
+                            },
+                            "ga_client_Id": {
+                              "type": "string",
+                              "description": "Your Google Analytics ID."
+                            },
+                            "plan_id": {
+                              "type": "string",
+                              "description": "Your subscription plan id."
+                            }
+                          },
+                          "required": [
+                            "user_id",
+                            "ga_client_Id",
+                            "plan_id"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "plugin_limits",
+                        "user_info"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "1",
+                      "result": {
+                        "plugin_limits": {
+                          "hasApiPlugin": true,
+                          "delayBetweenRequests": 1,
+                          "total": 100,
+                          "used": 0,
+                          "left": 100
+                        },
+                        "user_info": {
+                          "user_id": "565892",
+                          "ga_client_Id": "1527281284.1735325610",
+                          "plan_id": "1"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "plugin_limits": {
+                          "hasApiPlugin": true,
+                          "delayBetweenRequests": 1,
+                          "total": 100,
+                          "used": 1,
+                          "left": 99
+                        },
+                        "user_info": {
+                          "user_id": "555",
+                          "ga_client_Id": "1234.5678",
+                          "plan_id": "3"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ],
+        "x-internal": true
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Api credits",
+      "description": "Info about your api credits"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "id": {
+        "type": "string",
+        "title": "id",
+        "description": "Request / response identifier, prodvided from your side, will be mirrored from request to `id` in response. Example \"id\":\"123\"",
+        "x-examples": {
+          "Example 1": {
+            "id": "123"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ]
+}

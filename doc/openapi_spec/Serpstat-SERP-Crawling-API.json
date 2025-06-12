@@ -1,0 +1,2150 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "2.0",
+    "title": "Serpstat SERP Crawling API",
+    "description": "### Current version: 2\n\nhttps://serpstat.com/rt/api/v2 — Endpoint URL, through which all requests should be processed.\n\n### API protocol\n\n- Our API protocol is [**JSON-RPC 2.0**](https://www.jsonrpc.org/specification).\n\n### Requests\n\n- All requests should be sent via **POST** method.\n- All request parameters must be set via POST request body in **JSON** format.\n- Each request should contain a `method` name parameter corresponding to the API method (case-sensitive).\n\n### Authentication\n\n- Tokens are used for authentication. Create a token on [your profile page](https://serpstat.com/users/profile/). \n- `token` is required for all API requests.\n- Api token is available for almost paid and trial plans that have API feature enabled.\n\n### Pagination\n\nFor pagination, use the parameters:\n- `size`: number of results per page (default 100, maximum 1000);\n- `page`: page number (default is 1st page).\n\nPlease note: not all methods are supporting pagination.\n\n\n### Filters\n\nFilters can be applied to each method, most of them are specific for the method you used.\n`filters` object are optional for most methods.\n\n### Responses\n\n- All responses are in **JSON** format.\n- All responses have 200 HTTP status, even erroneous ones. In case of error, the response contains an `error` object instead of `result`.\n\n\n### API credits \n\n- This API has separate billing and credits type for this API are not included in any available subscription plan. [Contacts sales](https://data.serpstat.com/serp-api-scraper/) for details.\n\n- The cost varies from $0.0013 to $0.00065 per one keyword depending on the volume of credits required.\n\n- The minimum budget for the service is $300 ( ~ 230,000 SERPs)\n- Unlimited number of requests per day and month.\n\n- Perform analysis regardless of the availability of a pricing plan or available credits.\n\n- Credits for SERP Crawling don't expire at the end of the month, you can use them when it is convenient for you.\n\n- All keywords accepted to task are billed after task submission.\n\n- Charged credits are not refundable.\n\n### AI Overview\nGoogle AI Overview results are currently available within standard SERP Crawling requests at no additional cost. \nThis allows you to access AI-generated summaries and reference sources as part of your regular SERP data. However, **starting August 1, 2025, AI Overview data will become a separate optional parameter with additional pricing**. After this date, you will need to specifically enable AI Overview in your API requests and account for the additional costs in your usage billing.\n\n### Request rates\n\nMost subscription plans are limited to 1 request per second.\nTop-tier plans allow up to 10 requests per second.\nFor higher rate limits, contact our sales team.\nExceeding your rate limit will result in an error response.\n\n### Max results\n\nThe maximum number of results returned by each API method is limited up to 60,000 rows.\n",
+    "termsOfService": "",
+    "contact": {
+      "name": "Support",
+      "url": "https://serpstat.com",
+      "email": "support@serpstat.com"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "name": "CC BY 4.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://serpstat.com/rt/api/v2",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/#tasks.addTask": {
+      "post": {
+        "tags": [
+          "SERP Crawling"
+        ],
+        "summary": "addTask",
+        "description": "The `tasks.addTask` method allows sending keywords to crawl regular SERP and local results and get a task ID for further queries.\n\n> **AI Overview**: Google AI Overview results are currently available within standard SERP Crawling requests at no additional cost. This allows you to access AI-generated summaries and reference sources as part of your regular SERP data. However, **starting August 1, 2025, AI Overview data will become a separate optional parameter with additional pricing**. After this date, you will need to specifically enable AI Overview in your API requests and account for the additional costs in your usage billing.",
+        "operationId": "post-#tasks.addTask",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `tasks.addTask`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "keywords": {
+                        "type": "string",
+                        "description": "Keywords for parsing divided by commas.\n\nExample: `\"iphone, iphone X, iphone 10\"`"
+                      },
+                      "seId": {
+                        "type": "integer",
+                        "enum": [
+                          1
+                        ],
+                        "description": "Search engine identifier\n\n* **1** — Google"
+                      },
+                      "countryId": {
+                        "$ref": "#/components/schemas/countryId"
+                      },
+                      "regionId": {
+                        "$ref": "#/components/schemas/regionId"
+                      },
+                      "langId": {
+                        "$ref": "#/components/schemas/langId"
+                      },
+                      "typeId": {
+                        "$ref": "#/components/schemas/typeId"
+                      },
+                      "type": {
+                        "$ref": "#/components/schemas/typeResults"
+                      }
+                    },
+                    "required": [
+                      "keywords",
+                      "seId",
+                      "countryId",
+                      "regionId"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "tasks.addTask",
+                    "params": {
+                      "keywords": "pizza, burger, iphone",
+                      "typeId": 1,
+                      "seId": 1,
+                      "countryId": 23,
+                      "regionId": 21176,
+                      "langId": 1
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "tasks.addTask",
+                    "params": {
+                      "keywords": "pizza, burger, iphone",
+                      "typeId": 1,
+                      "seId": 1,
+                      "countryId": 23,
+                      "regionId": 21176,
+                      "langId": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/requestId"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "$ref": "#/components/schemas/task_id"
+                        },
+                        "blocked_keywords": {
+                          "type": "array",
+                          "description": "Keywords with special symbols, which were rejected, credits won’t be charged",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "task_id",
+                        "blocked_keywords"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "task_id": "5484945",
+                        "blocked_keywords": []
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "task_id": "5484945",
+                        "blocked_keywords": []
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://serpstat.com/rt/api/v2",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#tasks.addKeywordList": {
+      "post": {
+        "tags": [
+          "SERP Crawling"
+        ],
+        "summary": "addKeywordList",
+        "description": "The `tasks.addKeywordList` method allows sending keywords with commas to crawl regular SERP and local results as an array.\n> **AI Overview**: Google AI Overview results are currently available within standard SERP Crawling requests at no additional cost. This allows you to access AI-generated summaries and reference sources as part of your regular SERP data. However, **starting August 1, 2025, AI Overview data will become a separate optional parameter with additional pricing**. After this date, you will need to specifically enable AI Overview in your API requests and account for the additional costs in your usage billing.",
+        "operationId": "post-#tasks.addKeywordList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `tasks.addKeywordList`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "keywords": {
+                        "type": "array",
+                        "description": "Keywords with commas for parsing.\n\nExample: `[\"samsung, iphone\", \"nike, adidas\"]`",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "seId": {
+                        "type": "integer",
+                        "enum": [
+                          1
+                        ],
+                        "description": "Search engine identifier\n\n* **1** — Google"
+                      },
+                      "countryId": {
+                        "$ref": "#/components/schemas/countryId"
+                      },
+                      "regionId": {
+                        "$ref": "#/components/schemas/regionId"
+                      },
+                      "langId": {
+                        "$ref": "#/components/schemas/langId"
+                      },
+                      "typeId": {
+                        "$ref": "#/components/schemas/typeId"
+                      },
+                      "type": {
+                        "$ref": "#/components/schemas/typeResults"
+                      }
+                    },
+                    "required": [
+                      "keywords",
+                      "seId",
+                      "countryId",
+                      "regionId"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "tasks.addTask",
+                    "params": {
+                      "keywords": "pizza, burger, iphone",
+                      "typeId": 1,
+                      "seId": 1,
+                      "countryId": 23,
+                      "regionId": 21176,
+                      "langId": 1
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "tasks.addKeywordList",
+                    "params": {
+                      "keywords": [
+                        "samsung, iphone",
+                        "nike, adidas"
+                      ],
+                      "typeId": 1,
+                      "seId": 1,
+                      "countryId": 23,
+                      "regionId": 21176,
+                      "langId": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/requestId"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "$ref": "#/components/schemas/task_id"
+                        },
+                        "blocked_keywords": {
+                          "type": "array",
+                          "description": "Keywords with special symbols, which were rejected, credits won’t be charged",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "task_id",
+                        "blocked_keywords"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "task_id": "5484945",
+                        "blocked_keywords": []
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "task_id": "5484945",
+                        "blocked_keywords": []
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://serpstat.com/rt/api/v2",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#tasks.getTaskResult": {
+      "post": {
+        "tags": [
+          "SERP Crawling"
+        ],
+        "summary": "getTaskResult",
+        "description": "The `tasks.getTaskResult` method allows getting a SERP Crawling of regular and local results using the identifiers.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API credits.\n\n> **AI Overview**: Google AI Overview results are currently available within standard SERP Crawling requests at no additional cost. This allows you to access AI-generated summaries and reference sources as part of your regular SERP data. However, **starting August 1, 2025, AI Overview data will become a separate optional parameter with additional pricing**. After this date, you will need to specifically enable AI Overview in your API requests and account for the additional costs in your usage billing.",
+        "operationId": "post-#tasks.getTaskResult",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `tasks.getTaskResult`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "taskId": {
+                        "$ref": "#/components/schemas/task_id"
+                      },
+                      "page": {
+                        "type": "integer",
+                        "description": "Page number"
+                      }
+                    },
+                    "required": [
+                      "taskId"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "tasks.getTaskResult",
+                    "params": {
+                      "taskId": 5484945,
+                      "page": 1
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "tasks.getTaskResult",
+                    "params": {
+                      "taskId": 5484945,
+                      "page": 1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/requestId"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "task_meta": {
+                          "type": "object",
+                          "description": "Meta information about task",
+                          "properties": {
+                            "se_id": {
+                              "type": "integer",
+                              "enum": [
+                                1
+                              ],
+                              "description": "Search engine identifier\n\n* **1** — Google"
+                            },
+                            "country_id": {
+                              "$ref": "#/components/schemas/countryId"
+                            },
+                            "region_id": {
+                              "$ref": "#/components/schemas/regionId"
+                            },
+                            "device_type_id": {
+                              "$ref": "#/components/schemas/typeId"
+                            }
+                          },
+                          "required": [
+                            "se_id",
+                            "country_id",
+                            "region_id",
+                            "device_type_id"
+                          ]
+                        },
+                        "tops": {
+                          "type": "array",
+                          "description": "The project’s keywords result array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "keyword_id": {
+                                "type": "integer",
+                                "description": "ID number of a required keyword for getting a SERP"
+                              },
+                              "keyword": {
+                                "type": "string",
+                                "description": "The keyword"
+                              },
+                              "keyword_data": {
+                                "type": "object",
+                                "description": "SERP for current keyword",
+                                "properties": {
+                                  "top": {
+                                    "type": "array",
+                                    "description": "Array of organic positions for the current keyword, max. 100 positions",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "url": {
+                                          "type": "string",
+                                          "description": "URL of the webpage"
+                                        },
+                                        "domain": {
+                                          "type": "string",
+                                          "description": "Domain name result"
+                                        },
+                                        "subdomain": {
+                                          "type": "string",
+                                          "description": "A subdomain of a domain"
+                                        },
+                                        "title": {
+                                          "type": "string",
+                                          "description": "Title in a search result"
+                                        },
+                                        "title_length": {
+                                          "type": "integer",
+                                          "description": "The length of the title"
+                                        },
+                                        "snippet": {
+                                          "type": "string",
+                                          "description": "HTML view"
+                                        },
+                                        "snippet_length": {
+                                          "type": "integer",
+                                          "description": "The length of snippet"
+                                        },
+                                        "breadcrumbs": {
+                                          "type": "string",
+                                          "description": "“Bread crumbs”, if it is in the search result"
+                                        },
+                                        "spec_elements": {
+                                          "type": "array",
+                                          "description": "Array with parameters of special elements",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "description": "snippet type, see [Snippet types](../docs/serpstat-public-api/3vs2ueyhe5j08-snippets-types)"
+                                              },
+                                              "content": {
+                                                "type": "string",
+                                                "nullable": true,
+                                                "description": "Content attribute"
+                                              },
+                                              "href": {
+                                                "nullable": true,
+                                                "description": "Href attribute"
+                                              },
+                                              "anchor": {
+                                                "nullable": true,
+                                                "description": "Anchor attribute"
+                                              },
+                                              "sort_number": {
+                                                "type": "integer",
+                                                "description": "The number of spec element"
+                                              }
+                                            },
+                                            "required": [
+                                              "type",
+                                              "content",
+                                              "href",
+                                              "anchor",
+                                              "sort_number"
+                                            ]
+                                          }
+                                        },
+                                        "types": {
+                                          "type": "array",
+                                          "description": "List of special elements shown in the organic position",
+                                          "items": {
+                                            "type": "string"
+                                          }
+                                        },
+                                        "position": {
+                                          "type": "integer",
+                                          "description": "Position in the top"
+                                        }
+                                      },
+                                      "required": [
+                                        "url",
+                                        "domain",
+                                        "subdomain",
+                                        "title",
+                                        "title_length",
+                                        "snippet",
+                                        "snippet_length",
+                                        "breadcrumbs",
+                                        "spec_elements",
+                                        "types",
+                                        "position"
+                                      ]
+                                    }
+                                  },
+                                  "ads": {
+                                    "type": "object",
+                                    "description": "PPC in SERP",
+                                    "properties": {
+                                      "1": {
+                                        "type": "array",
+                                        "description": "Ad list at the top of the page",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "title": {
+                                              "type": "string",
+                                              "description": "Ad title"
+                                            },
+                                            "url": {
+                                              "type": "string",
+                                              "description": "Ad url"
+                                            },
+                                            "domain": {
+                                              "type": "string",
+                                              "description": "Domain name"
+                                            },
+                                            "breadcrumbs": {
+                                              "type": "string",
+                                              "description": "Ad breadcrumbs"
+                                            },
+                                            "subdomain": {
+                                              "type": "string",
+                                              "description": " Subdomain of the domain"
+                                            },
+                                            "text": {
+                                              "type": "string",
+                                              "description": "Ad text"
+                                            },
+                                            "position": {
+                                              "type": "integer",
+                                              "description": "Position in the ad list"
+                                            }
+                                          },
+                                          "required": [
+                                            "title",
+                                            "url",
+                                            "domain",
+                                            "breadcrumbs",
+                                            "subdomain",
+                                            "text",
+                                            "position"
+                                          ]
+                                        }
+                                      },
+                                      "2": {
+                                        "type": "array",
+                                        "description": "Ad list on the right of the page (outdated view)",
+                                        "items": {
+                                          "type": "object"
+                                        }
+                                      },
+                                      "3": {
+                                        "type": "array",
+                                        "description": "Ad list at the bottom of the page",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "title": {
+                                              "type": "string",
+                                              "description": "Ad title"
+                                            },
+                                            "url": {
+                                              "type": "string",
+                                              "description": "Ad url"
+                                            },
+                                            "domain": {
+                                              "type": "string",
+                                              "description": "Domain name"
+                                            },
+                                            "breadcrumbs": {
+                                              "type": "string",
+                                              "description": "Ad breadcrumbs"
+                                            },
+                                            "subdomain": {
+                                              "type": "string",
+                                              "description": "Subdomain of the domain"
+                                            },
+                                            "text": {
+                                              "type": "string",
+                                              "description": "Ad text"
+                                            },
+                                            "position": {
+                                              "type": "integer",
+                                              "description": "Position in the ad list"
+                                            }
+                                          },
+                                          "required": [
+                                            "title",
+                                            "url",
+                                            "domain",
+                                            "breadcrumbs",
+                                            "subdomain",
+                                            "text",
+                                            "position"
+                                          ]
+                                        }
+                                      }
+                                    },
+                                    "required": [
+                                      "1",
+                                      "2",
+                                      "3"
+                                    ]
+                                  },
+                                  "results": {
+                                    "type": "integer",
+                                    "description": "Total number of results in SERP"
+                                  },
+                                  "right_spell": {
+                                    "type": "string",
+                                    "description": "Correct spelling of the keyword"
+                                  },
+                                  "types": {
+                                    "type": "array",
+                                    "description": "List of special elements shown in the SERP",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "top_features_content": {
+                                    "type": "array",
+                                    "description": "Array with parameters of some SERP special elements",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "LocalPack": {
+                                          "type": "object",
+                                          "properties": {
+                                            "LocalPackSnippet": {
+                                              "type": "object",
+                                              "properties": {
+                                                "localpack": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "title": {
+                                                        "type": "string",
+                                                        "description": "Title"
+                                                      },
+                                                      "ads": {
+                                                        "type": "boolean",
+                                                        "description": "Indicates whether this block is an ad (true/false);"
+                                                      },
+                                                      "thumbnail": {
+                                                        "type": "boolean",
+                                                        "description": "The presence of a picture"
+                                                      },
+                                                      "extensions": {
+                                                        "type": "array",
+                                                        "description": "Information about the address, opening hours, status (open / closed), time when it will open",
+                                                        "items": {
+                                                          "type": "string"
+                                                        }
+                                                      },
+                                                      "rating": {
+                                                        "type": "string",
+                                                        "description": "Rating"
+                                                      },
+                                                      "review": {
+                                                        "type": "string",
+                                                        "description": "Number of reviews"
+                                                      },
+                                                      "pricing": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "prices in the institution in different currencies ($, ₽, £), the more banknotes — the more expensive"
+                                                      },
+                                                      "wrapped": {
+                                                        "type": "string",
+                                                        "description": " Various additional information"
+                                                      },
+                                                      "options": {
+                                                        "type": "string",
+                                                        "nullable": true,
+                                                        "description": "service options offered by the establishment, for example: \"Food in the establishment\", \"Order from the street\", \"No delivery\""
+                                                      },
+                                                      "position": {
+                                                        "type": "integer",
+                                                        "description": "Serial position"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "title",
+                                                      "ads",
+                                                      "thumbnail",
+                                                      "extensions",
+                                                      "rating",
+                                                      "review",
+                                                      "pricing",
+                                                      "wrapped",
+                                                      "options",
+                                                      "position"
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "PeopleAlsoAsk": {
+                                          "type": "object",
+                                          "properties": {
+                                            "PeopleAlsoAsk": {
+                                              "type": "object",
+                                              "properties": {
+                                                "people_also_ask_block": {
+                                                  "type": "array",
+                                                  "description": "Not used. Field is depricated",
+                                                  "items": {
+                                                    "type": "object"
+                                                  }
+                                                },
+                                                "people_also_ask_questions": {
+                                                  "type": "array",
+                                                  "description": "Array of questions",
+                                                  "items": {
+                                                    "type": "string"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "RightShop": {
+                                          "type": "object",
+                                          "properties": {
+                                            "RhsShopBlock": {
+                                              "type": "object",
+                                              "properties": {
+                                                "shop_content": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "position": {
+                                                        "type": "integer",
+                                                        "description": "Serial position"
+                                                      },
+                                                      "store_url": {
+                                                        "type": "string",
+                                                        "description": "Store url"
+                                                      },
+                                                      "title": {
+                                                        "type": "string",
+                                                        "description": "Title"
+                                                      },
+                                                      "price": {
+                                                        "type": "string",
+                                                        "description": "Price"
+                                                      },
+                                                      "store": {
+                                                        "type": "string",
+                                                        "description": "Store name"
+                                                      },
+                                                      "network": {
+                                                        "type": "string",
+                                                        "description": "Not used. Field is depricated"
+                                                      },
+                                                      "network_url": {
+                                                        "type": "string",
+                                                        "description": "Not used. Field is depricated"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "position",
+                                                      "store_url",
+                                                      "title",
+                                                      "price",
+                                                      "store",
+                                                      "network",
+                                                      "network_url"
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "TopShop": {
+                                          "type": "object",
+                                          "properties": {
+                                            "TopShopBlock": {
+                                              "type": "object",
+                                              "properties": {
+                                                "shop_content": {
+                                                  "type": "array",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "position": {
+                                                        "type": "integer",
+                                                        "description": "Serial position"
+                                                      },
+                                                      "store_url": {
+                                                        "type": "string",
+                                                        "description": "Store url"
+                                                      },
+                                                      "title": {
+                                                        "type": "string",
+                                                        "description": "Title"
+                                                      },
+                                                      "price": {
+                                                        "type": "string",
+                                                        "description": "Price"
+                                                      },
+                                                      "store": {
+                                                        "type": "string",
+                                                        "description": "Store name"
+                                                      },
+                                                      "network": {
+                                                        "type": "string",
+                                                        "description": "Not used. Field is depricated"
+                                                      },
+                                                      "network_url": {
+                                                        "type": "string",
+                                                        "description": "Not used. Field is depricated"
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "position",
+                                                      "store_url",
+                                                      "title",
+                                                      "price",
+                                                      "store",
+                                                      "network",
+                                                      "network_url"
+                                                    ]
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "AiOverview": {
+                                          "type": "object",
+                                          "description": "The root container for Google's AI Overview feature response. This represents the complete AI-powered summary that Google displays above traditional search results to provide users with immediate, synthesized answers to their queries.",
+                                          "properties": {
+                                            "AiOverview": {
+                                              "type": "object",
+                                              "properties": {
+                                                "aio_content": {
+                                                  "type": "object",
+                                                  "description": "Contains the main AI-generated content and associated interactive elements from Google's AI Overview.",
+                                                  "properties": {
+                                                    "text": {
+                                                      "type": "string",
+                                                      "description": "The core AI-generated summary text from Google's AI Overview. "
+                                                    },
+                                                    "links": {
+                                                      "type": "array",
+                                                      "description": "Interactive hyperlinks embedded within Google's AI Overview text block. ",
+                                                      "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                          "text": {
+                                                            "type": "string",
+                                                            "description": "The clickable anchor text for links embedded in Google's AI Overview text block."
+                                                          },
+                                                          "url": {
+                                                            "type": "string",
+                                                            "description": "The destination URL for links referenced in Google's AI Overview text block."
+                                                          }
+                                                        },
+                                                        "required": [
+                                                          "text",
+                                                          "url"
+                                                        ]
+                                                      }
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "text",
+                                                    "links"
+                                                  ]
+                                                },
+                                                "aio_references": {
+                                                  "type": "array",
+                                                  "description": "The main source links that Google prominently displays on the right side of the AI Overview block. ",
+                                                  "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                      "title": {
+                                                        "type": "string",
+                                                        "description": "The page title of one of Google's featured reference sources displayed in the right-side link panel."
+                                                      },
+                                                      "snippet": {
+                                                        "type": "string",
+                                                        "description": "A preview excerpt from the featured reference source. This may be empty if Google doesn't provide a snippet for that particular featured link."
+                                                      },
+                                                      "url": {
+                                                        "type": "string",
+                                                        "description": "The complete URL of the featured reference source displayed in Google's right-side link panel."
+                                                      },
+                                                      "domain": {
+                                                        "type": "string",
+                                                        "description": "The root domain of the featured reference source (e.g., \"kayak.com\")."
+                                                      },
+                                                      "subdomain": {
+                                                        "type": "string",
+                                                        "description": "The full subdomain path of the featured reference source (e.g., \"www.kayak.com\")."
+                                                      },
+                                                      "position": {
+                                                        "type": "integer",
+                                                        "description": "The display order of the featured reference link in Google's right-side panel (1, 2, 3, etc.), indicating Google's ranking of these primary sources."
+                                                      }
+                                                    },
+                                                    "required": [
+                                                      "title",
+                                                      "snippet",
+                                                      "url",
+                                                      "domain",
+                                                      "subdomain",
+                                                      "position"
+                                                    ]
+                                                  }
+                                                }
+                                              },
+                                              "required": [
+                                                "aio_content",
+                                                "aio_references"
+                                              ]
+                                            }
+                                          },
+                                          "required": [
+                                            "AiOverview"
+                                          ]
+                                        }
+                                      },
+                                      "required": [
+                                        "AiOverview"
+                                      ]
+                                    }
+                                  }
+                                },
+                                "required": [
+                                  "top",
+                                  "ads",
+                                  "results",
+                                  "right_spell",
+                                  "types"
+                                ]
+                              },
+                              "target_fields": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "keyword_id",
+                              "keyword",
+                              "keyword_data"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "task_meta",
+                        "tops"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "task_meta": {
+                          "se_id": "1",
+                          "country_id": "23",
+                          "region_id": "21176",
+                          "device_type_id": "1"
+                        },
+                        "tops": [
+                          {
+                            "keyword_id": "706657334",
+                            "keyword": "burger",
+                            "keyword_data": {
+                              "top": [
+                                {
+                                  "url": "https://www.burgerboat.com/",
+                                  "domain": "burgerboat.com",
+                                  "subdomain": "www.burgerboat.com",
+                                  "title": "Burger Boat Company - Custom Yachts | Luxury Boats",
+                                  "title_length": 50,
+                                  "snippet": "Creation starts here. Burger embraces innovation, state-of-the-art technology and exquisite craftsmanship to build the custom yacht of your dreams.",
+                                  "snippet_length": 147,
+                                  "breadcrumbs": "https://www.burgerboat.com",
+                                  "spec_elements": [
+                                    {
+                                      "type": "snip_breadcrumbs",
+                                      "content": "https://www.burgerboat.com",
+                                      "href": null,
+                                      "anchor": null,
+                                      "sort_number": 0
+                                    },
+                                    {
+                                      "type": "snip_image_thumbnail",
+                                      "content": null,
+                                      "href": null,
+                                      "anchor": null,
+                                      "sort_number": 1
+                                    }
+                                  ],
+                                  "types": [
+                                    "snip_breadcrumbs",
+                                    "snip_image_thumbnail"
+                                  ],
+                                  "position": 1
+                                }
+                              ],
+                              "ads": {
+                                "1": [],
+                                "2": [],
+                                "3": []
+                              },
+                              "results": 1330000000,
+                              "right_spell": "",
+                              "types": [
+                                "local_pack",
+                                "kn_graph_card",
+                                "related_search",
+                                "also_asks"
+                              ],
+                              "top_features_content": [
+                                {
+                                  "LocalPack": {
+                                    "LocalPackSnippet": {
+                                      "localpack": [
+                                        {
+                                          "title": "MrBeast Burger",
+                                          "ads": false,
+                                          "thumbnail": true,
+                                          "extensions": [
+                                            "Hamburger",
+                                            "San Antonio, TX"
+                                          ],
+                                          "rating": "3.0",
+                                          "review": "2",
+                                          "pricing": null,
+                                          "wrapped": "\"Also known as “Smash N Grab Burger Joint or Le Mirage Cafe\"",
+                                          "options": null,
+                                          "position": 1
+                                        },
+                                        {
+                                          "title": "Champ Burger",
+                                          "ads": false,
+                                          "thumbnail": true,
+                                          "extensions": [
+                                            "Hamburger",
+                                            "Houston, TX",
+                                            "Closed",
+                                            "Opens 10 AM"
+                                          ],
+                                          "rating": "4.8",
+                                          "review": "2.6K",
+                                          "pricing": null,
+                                          "wrapped": "\"Our burgers were seasoned to perfection and veggies were fresh.\"",
+                                          "options": null,
+                                          "position": 2
+                                        },
+                                        {
+                                          "title": "Texas Hamburger Company",
+                                          "ads": false,
+                                          "thumbnail": true,
+                                          "extensions": [
+                                            "Hamburger",
+                                            "San Antonio, TX",
+                                            "Closed",
+                                            "Opens 10:30 AM"
+                                          ],
+                                          "rating": "4.4",
+                                          "review": "1.9K",
+                                          "pricing": null,
+                                          "wrapped": "\"The burgers were juicy and flavorful.\"",
+                                          "options": null,
+                                          "position": 3
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "PeopleAlsoAsk": {
+                                    "PeopleAlsoAsk": {
+                                      "people_also_ask_block": [],
+                                      "people_also_ask_questions": [
+                                        "What is the 5 6 7 rule for burgers?",
+                                        "What is the difference between a burger and a hamburger?",
+                                        "Why was burger called burger?",
+                                        "What is Daddy burger?"
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "target_fields": "[]"
+                          },
+                          {
+                            "keyword_id": "706657335",
+                            "keyword": "iphone",
+                            "keyword_data": {
+                              "top": [
+                                {
+                                  "url": "https://www.apple.com/iphone/",
+                                  "domain": "apple.com",
+                                  "subdomain": "www.apple.com",
+                                  "title": "iPhone",
+                                  "title_length": 6,
+                                  "snippet": "Designed for Apple Intelligence. Discover the new iPhone 16 Pro, iPhone 16 Pro Max, iPhone 16, and iPhone 16 Plus.",
+                                  "snippet_length": 114,
+                                  "breadcrumbs": "https://www.apple.com › iphone",
+                                  "spec_elements": [
+                                    {
+                                      "type": "snip_breadcrumbs",
+                                      "content": "https://www.apple.com › iphone",
+                                      "href": null,
+                                      "anchor": null,
+                                      "sort_number": 0
+                                    },
+                                    {
+                                      "type": "snip_sitelinks",
+                                      "content": null,
+                                      "href": null,
+                                      "anchor": null,
+                                      "sort_number": 1
+                                    }
+                                  ],
+                                  "types": [
+                                    "snip_breadcrumbs",
+                                    "snip_sitelinks"
+                                  ],
+                                  "position": 1
+                                }
+                              ],
+                              "ads": {
+                                "1": [
+                                  {
+                                    "title": "iPhone",
+                                    "url": "https://www.apple.com/iphone/",
+                                    "domain": "apple.com",
+                                    "breadcrumbs": "https://www.apple.com",
+                                    "subdomain": "www.apple.com",
+                                    "text": "Apple Official Site — Get $170-630 off an iPhone 16 when you trade in iPhone 12 or higher. Terms Apply. Up to...",
+                                    "position": 1
+                                  }
+                                ],
+                                "2": [],
+                                "3": [
+                                  {
+                                    "title": "iPhone - Buy now - Apple Official Site",
+                                    "url": "https://www.apple.com/iphone/",
+                                    "domain": "apple.com",
+                                    "breadcrumbs": "https://www.apple.com",
+                                    "subdomain": "www.apple.com",
+                                    "text": "Get $170-630 off an iPhone 16 when you trade in iPhone 12 or higher. Terms Apply. Up to $1000 in credit after trade-in with AT&T...",
+                                    "position": 2
+                                  }
+                                ]
+                              },
+                              "results": 2147000000,
+                              "right_spell": "",
+                              "types": [
+                                "ads_bot",
+                                "shopping_rhs",
+                                "related_search",
+                                "ads_top",
+                                "pic"
+                              ],
+                              "top_features_content": [
+                                {
+                                  "RightShop": {
+                                    "RhsShopBlock": {
+                                      "shop_content": [
+                                        {
+                                          "position": 1,
+                                          "store_url": "https://www.t-mobile.com/cell-phone/apple-iphone-16-pro-max?sku=195949805066",
+                                          "title": "Apple iPhone 16 Pro Max - Desert Titanium - 256GB (with 24 monthly payments + plan)",
+                                          "price": "$0.00 now",
+                                          "store": "T-Mobile",
+                                          "network": "n/a",
+                                          "network_url": "n/a"
+                                        },
+                                        {
+                                          "position": 2,
+                                          "store_url": "https://www.t-mobile.com/cell-phone/apple-iphone-16-plus?sku=195949721519",
+                                          "title": "Apple iPhone 16 Plus - Pink - 128GB (with 24 monthly payments + plan)",
+                                          "price": "$0.00 now",
+                                          "store": "T-Mobile",
+                                          "network": "n/a",
+                                          "network_url": "n/a"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "target_fields": "[]"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "task_meta": {
+                          "se_id": "1",
+                          "country_id": "23",
+                          "region_id": "21176",
+                          "device_type_id": "1"
+                        },
+                        "tops": [
+                          {
+                            "keyword_id": "706657334",
+                            "keyword": "burger",
+                            "keyword_data": {
+                              "top": [
+                                {
+                                  "url": "https://www.kayak.com/Cheap-Metairie-Car-Rentals.20715.cars.ksp",
+                                  "domain": "kayak.com",
+                                  "subdomain": "www.kayak.com",
+                                  "position": 1,
+                                  "title": "Metairie car rentals from $37/day",
+                                  "title_length": 33,
+                                  "snippet": "In the past 72 hours, the cheapest rental cars were found at Thrifty ($28.70/day), Hertz ($44.97/day) and Enterprise Rent-A-Car ($47.52/day). Starting from $36.70",
+                                  "snippet_length": 162,
+                                  "breadcrumbs": "https://www.kayak.com › Cheap-Metairie-Car-Rentals.2...",
+                                  "types": [
+                                    "snip_breadcrumbs",
+                                    "snip_image_thumbnail",
+                                    "snip_url_in_aio"
+                                  ],
+                                  "spec_elements": [
+                                    {
+                                      "anchor": null,
+                                      "content": "https://www.kayak.com › Cheap-Metairie-Car-Rentals.2...",
+                                      "href": null,
+                                      "sort_number": 0,
+                                      "type": "snip_breadcrumbs"
+                                    },
+                                    {
+                                      "anchor": null,
+                                      "content": null,
+                                      "href": null,
+                                      "sort_number": 1,
+                                      "type": "snip_image_thumbnail"
+                                    },
+                                    {
+                                      "anchor": null,
+                                      "content": null,
+                                      "href": null,
+                                      "sort_number": 2,
+                                      "type": "snip_url_in_aio"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "ads": {
+                                "1": [
+                                  {
+                                    "url": "https://www.avis.com/en/locations/find-a-location",
+                                    "domain": "avis.com",
+                                    "subdomain": "www.avis.com",
+                                    "position": 1,
+                                    "title": "Avis Rent a Car | Avis® Car Rental",
+                                    "text": "Avis has a wide range of car options and thousands of convenient locations",
+                                    "breadcrumbs": "https://www.avis.com"
+                                  }
+                                ],
+                                "2": [],
+                                "3": []
+                              },
+                              "results": 1050000,
+                              "right_spell": "",
+                              "types": [
+                                "related_search",
+                                "also_asks",
+                                "ai_overview",
+                                "local_pack",
+                                "pic",
+                                "ads_top"
+                              ],
+                              "top_features_content": [
+                                {
+                                  "LocalPack": {
+                                    "LocalPackSnippet": {
+                                      "localpack": [
+                                        {
+                                          "title": "Enterprise Rent-A-Car",
+                                          "ads": false,
+                                          "thumbnail": false,
+                                          "extensions": [
+                                            "Car rental agency",
+                                            "Metairie, LA",
+                                            "(504) 457-0180",
+                                            "Closed",
+                                            "Opens 7:30 AM"
+                                          ],
+                                          "rating": "4.2",
+                                          "review": "194",
+                                          "pricing": null,
+                                          "wrapped": "\"Cannot recommend highly enough.\"",
+                                          "options": null,
+                                          "position": 1
+                                        },
+                                        {
+                                          "title": "Enterprise Rent-A-Car",
+                                          "ads": false,
+                                          "thumbnail": false,
+                                          "extensions": [
+                                            "Car rental agency",
+                                            "Metairie, LA",
+                                            "(504) 454-2247",
+                                            "Closed",
+                                            "Opens 8 AM"
+                                          ],
+                                          "rating": "4.0",
+                                          "review": "413",
+                                          "pricing": null,
+                                          "wrapped": "\"It had been damaged previously, but none of that was too big of a deal.\"",
+                                          "options": null,
+                                          "position": 2
+                                        },
+                                        {
+                                          "title": "Budget Car Rental",
+                                          "ads": false,
+                                          "thumbnail": false,
+                                          "extensions": [
+                                            "Car rental agency",
+                                            "Metairie, LA",
+                                            "(504) 887-2952",
+                                            "Closed",
+                                            "Opens 9 AM"
+                                          ],
+                                          "rating": "3.3",
+                                          "review": "37",
+                                          "pricing": null,
+                                          "wrapped": "\"She gave us an additional discount.\"",
+                                          "options": null,
+                                          "position": 3
+                                        }
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "PeopleAlsoAsk": {
+                                    "PeopleAlsoAsk": {
+                                      "people_also_ask_block": [],
+                                      "people_also_ask_questions": [
+                                        "Which car rental company has the lowest fees?",
+                                        "How to get the lowest price on a rental car?",
+                                        "How can I pay less for a rental car?",
+                                        "Is it cheaper to rent a car for a week or by day?"
+                                      ]
+                                    }
+                                  }
+                                },
+                                {
+                                  "AiOverview": {
+                                    "AiOverview": {
+                                      "aio_content": {
+                                        "text": "To find a cheap car rental in Metairie, LA, compare prices from different rental companies, consider booking last-minute, and look for deals on smaller, more fuel-efficient cars. Here's a more detailed breakdown of how to find the best deals: 1. Compare Prices: Use online comparison websites: Sites like Kayak, Expedia, and Orbitz search multiple rental companies to find the best prices. Check multiple rental companies: Consider Thrifty, Hertz, Enterprise, Dollar, Budget, and Avis.",
+                                        "links": [
+                                          {
+                                            "text": "Avis",
+                                            "url": "https://www.avis.com/"
+                                          }
+                                        ]
+                                      },
+                                      "aio_references": [
+                                        {
+                                          "title": "Metairie car rentals from $37/day - Kayak",
+                                          "snippet": "End of interactive chart. What is the cheapest car rental company in Metairie? In the past 72 hours, the cheapest rental cars were...",
+                                          "url": "https://www.kayak.com/Cheap-Metairie-Car-Rentals.20715.cars.ksp",
+                                          "domain": "kayak.com",
+                                          "subdomain": "www.kayak.com",
+                                          "position": 1
+                                        },
+                                        {
+                                          "title": "$21 Car Rental Metairie, LA - Expedia",
+                                          "snippet": "",
+                                          "url": "https://www.expedia.com/Car-Rentals-In-Metairie.d8827.Car-Rental-Guide",
+                                          "domain": "expedia.com",
+                                          "subdomain": "www.expedia.com",
+                                          "position": 2
+                                        },
+                                        {
+                                          "title": "$33 Rental Cars in Metairie, LA - Orbitz.com",
+                                          "snippet": "Orbitz FAQs about car rental in Metairie. How much is car rental in Metairie? Car rental deals in Metairie cost an average of $40 ...",
+                                          "url": "https://www.orbitz.com/Car-Rentals-In-Metairie.d8827.Car-Rental-Guide",
+                                          "domain": "orbitz.com",
+                                          "subdomain": "www.orbitz.com",
+                                          "position": 3
+                                        }
+                                      ]
+                                    }
+                                  }
+                                }
+                              ]
+                            },
+                            "target_fields": "[]"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://serpstat.com/rt/api/v2",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#tasks.getKeywordSerp": {
+      "post": {
+        "tags": [
+          "SERP Crawling"
+        ],
+        "summary": "getKeywordSerp",
+        "description": "The `tasks.getKeywordSerp` method returns the raw SERP in HTML format using task ID and keyword ID. \n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API credits.\n\n> **AI Overview**: Google AI Overview results are currently available within standard SERP Crawling requests at no additional cost. This allows you to access AI-generated summaries and reference sources as part of your regular SERP data. However, **starting August 1, 2025, AI Overview data will become a separate optional parameter with additional pricing**. After this date, you will need to specifically enable AI Overview in your API requests and account for the additional costs in your usage billing.",
+        "operationId": "post-#tasks.getKeywordSerp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `tasks.getKeywordSerp`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "taskId": {
+                        "$ref": "#/components/schemas/task_id"
+                      },
+                      "keywordId": {
+                        "type": "integer",
+                        "description": "Id number of a required keyword for getting a raw SERP (you can get it in the SERP crawling response from the method `tasks.getTaskResult`)"
+                      }
+                    },
+                    "required": [
+                      "taskId",
+                      "keywordId"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "tasks.getKeywordSerp",
+                    "params": {
+                      "taskId": 5484945,
+                      "keywordId": 706657334
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "tasks.getKeywordSerp",
+                    "params": {
+                      "taskId": 5484945,
+                      "keywordId": 706657334
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/requestId"
+                        },
+                        "result": {
+                          "type": "object",
+                          "description": "The result of the successfully processed request",
+                          "properties": {
+                            "date": {
+                              "type": "string",
+                              "description": "SERP date in format `YYYY-MM-DD`"
+                            },
+                            "serp": {
+                              "type": "string",
+                              "description": "A raw SERP in HTML format"
+                            }
+                          },
+                          "required": [
+                            "date",
+                            "serp"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/requestId"
+                        },
+                        "error": {
+                          "type": "object",
+                          "description": "An error occurred while processing the request",
+                          "properties": {
+                            "code": {
+                              "type": "integer",
+                              "description": "Error code number"
+                            },
+                            "message": {
+                              "type": "string",
+                              "description": "Error message"
+                            },
+                            "data": {
+                              "type": "object",
+                              "description": "Additional data"
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "message",
+                            "data"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id"
+                      ]
+                    }
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "date": "2025-02-11",
+                        "serp": "<!doctype html><html itemscope=\"\"itemtype=\"http://schema.org/SearchResultsPage\"..."
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "date": "2025-02-11",
+                        "serp": "<!doctype html><html itemscope=\"\"itemtype=\"http://schema.org/SearchResultsPage\"..."
+                      }
+                    }
+                  },
+                  "Error: Task is not found (Incorrect task ID)": {
+                    "value": {
+                      "id": "123",
+                      "error": {
+                        "code": -32000,
+                        "message": "Task not found",
+                        "data": {}
+                      }
+                    }
+                  },
+                  "Error: Keyword is not found (Wrong keyword ID)": {
+                    "value": {
+                      "id": "123",
+                      "error": {
+                        "code": -32000,
+                        "message": "Keyword not found",
+                        "data": {}
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://serpstat.com/rt/api/v2",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#tasks.getParsingBalance": {
+      "post": {
+        "tags": [
+          "SERP Crawling"
+        ],
+        "summary": "getParsingBalance",
+        "description": "The `tasks.getParsingBalance` method returns balance on the account, used for SERP and volume parsing. It shows cost per 1 crawled keyword.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API credits.",
+        "operationId": "post-#tasks.getParsingBalance",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `tasks.getParsingBalance`"
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "tasks.getParsingBalance",
+                    "params": {}
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "tasks.getParsingBalance"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/requestId"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "available_usd": {
+                          "type": "string",
+                          "description": "Account balance in the USA dollars"
+                        },
+                        "serp_parsing_cost": {
+                          "type": "string",
+                          "description": "Cost for crawling 1 SERP"
+                        },
+                        "volume_parsing_cost": {
+                          "type": "string",
+                          "description": "The cost of receiving search volume for 1 keyword"
+                        }
+                      },
+                      "required": [
+                        "available_usd",
+                        "serp_parsing_cost",
+                        "volume_parsing_cost"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "available_usd": "99999.891",
+                        "serp_parsing_cost": "0.0004",
+                        "volume_parsing_cost": "0.0006"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "available_usd": "99999.891",
+                        "serp_parsing_cost": "0.0004",
+                        "volume_parsing_cost": "0.0006"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://serpstat.com/rt/api/v2",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#tasks.getList": {
+      "post": {
+        "tags": [
+          "SERP Crawling"
+        ],
+        "summary": "getList",
+        "description": "The `tasks.getList` method allows getting a list of required tasks with status for the last 7 days.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API credits.",
+        "operationId": "post-#tasks.getList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `tasks.getList`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Object with parameters",
+                    "properties": {
+                      "page": {
+                        "type": "integer",
+                        "description": "Page Number",
+                        "minimum": 1,
+                        "default": 1
+                      },
+                      "pageSize": {
+                        "type": "integer",
+                        "description": "Page size",
+                        "minimum": 100,
+                        "maximum": 1000
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "tasks.getList",
+                    "params": {
+                      "page": 1,
+                      "pageSize": 1000
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "tasks.getList",
+                    "params": {
+                      "page": 1,
+                      "pageSize": 1000
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/requestId"
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "task_id": {
+                            "$ref": "#/components/schemas/task_id"
+                          },
+                          "se_id": {
+                            "type": "integer",
+                            "enum": [
+                              1
+                            ],
+                            "description": "Search engine identifier\n\n* **1** — Google"
+                          },
+                          "country_id": {
+                            "$ref": "#/components/schemas/countryId"
+                          },
+                          "lang_id": {
+                            "$ref": "#/components/schemas/langId"
+                          },
+                          "region_id": {
+                            "$ref": "#/components/schemas/regionId"
+                          },
+                          "device_type_id": {
+                            "$ref": "#/components/schemas/typeId"
+                          },
+                          "progress": {
+                            "type": "string",
+                            "description": "Task execution progress, in percents"
+                          },
+                          "keywords_count": {
+                            "type": "integer",
+                            "description": "Keywords quantity in the task"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "description": "Date and time, when the task was created, in format `YYYY_MM-DD HH:MM:SS`"
+                          },
+                          "parsed_at": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Date and time, when the task was completed, in format `YYYY_MM-DD HH:MM:SS`"
+                          }
+                        },
+                        "required": [
+                          "task_id",
+                          "se_id",
+                          "country_id",
+                          "lang_id",
+                          "region_id",
+                          "device_type_id",
+                          "progress",
+                          "keywords_count",
+                          "created_at",
+                          "parsed_at"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": [
+                        {
+                          "task_id": "5484945",
+                          "se_id": "1",
+                          "country_id": "23",
+                          "lang_id": "1",
+                          "region_id": "21176",
+                          "device_type_id": "1",
+                          "progress": "100%",
+                          "keywords_count": "3",
+                          "created_at": "2025-02-11 13:34:35",
+                          "parsed_at": "2025-02-11 13:35:07"
+                        }
+                      ]
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": [
+                        {
+                          "task_id": "5484945",
+                          "se_id": "1",
+                          "country_id": "23",
+                          "lang_id": "1",
+                          "region_id": "21176",
+                          "device_type_id": "1",
+                          "progress": "100%",
+                          "keywords_count": "3",
+                          "created_at": "2025-02-11 13:34:35",
+                          "parsed_at": "2025-02-11 13:35:07"
+                        },
+                        {
+                          "task_id": "5484966",
+                          "se_id": "1",
+                          "country_id": "23",
+                          "lang_id": "1",
+                          "region_id": "21176",
+                          "device_type_id": "1",
+                          "progress": "0%",
+                          "keywords_count": "2",
+                          "created_at": "2025-02-11 16:51:16",
+                          "parsed_at": null
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://serpstat.com/rt/api/v2",
+            "description": "Default server"
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "SERP Crawling",
+      "description": "SERP Crawling API allows to crawl set of keywords"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "requestId": {
+        "type": "string",
+        "title": "requestId",
+        "description": "The request identifier provided by the client. It will be echoed as field `id` in the response. Example `\"id\":\"123\"`"
+      },
+      "countryId": {
+        "type": "integer",
+        "title": "countryId",
+        "description": "Country identifier. Reffer to full list of [county ids](/docs/serpstat-public-api/oerp7nc8ivqp7-countries)\n\nExample: `23`(USA)",
+        "minimum": 1,
+        "maximum": 247
+      },
+      "regionId": {
+        "type": "integer",
+        "title": "regionId",
+        "description": "Region or city identifier. Reffer to full list of [region ids](https://docs.google.com/spreadsheets/d/1LUDtm-L1qWMVpmWuN-nvDyYFfQtfiXUh5LIHE8sjs0k/edit#gid=75443986)\n\nExample: `21176`(Texas)",
+        "minimum": 1
+      },
+      "langId": {
+        "type": "integer",
+        "title": "langId",
+        "description": "Language identifier. Reffer to full list of [lang ids](/docs/serpstat-public-api/wuoshjguna09o-languages)\n\nExample: `1`(English)",
+        "minimum": 1,
+        "maximum": 48,
+        "default": 1
+      },
+      "typeId": {
+        "type": "integer",
+        "title": "typeId",
+        "description": "Device type identifier\n\n* **1** — Desktop\n* **2** — Mobile",
+        "minimum": 1,
+        "maximum": 2,
+        "default": 1
+      },
+      "typeResults": {
+        "type": "string",
+        "enum": [
+          "regular",
+          "local"
+        ],
+        "title": "typeResults",
+        "description": "Type of Google results\n\n* **regular** - regular SERP\n* **local** — local results (extended Google SERP Local pack, up to 50 results)",
+        "default": "regular"
+      },
+      "task_id": {
+        "title": "task_id",
+        "description": "Crawling identifier",
+        "oneOf": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ]
+}

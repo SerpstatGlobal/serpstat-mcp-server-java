@@ -1,0 +1,712 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "v4",
+    "title": "Serpstat Project Management API v4",
+    "description": "### Current version: 4\n\nhttps://api.serpstat.com/v4 — Endpoint URL, through which all requests should be processed.\n\n### API protocol\n\n- Our API protocol is [**JSON-RPC 2.0**](https://www.jsonrpc.org/specification).\n\n### Requests\n\n- All requests should be sent via **POST** method.\n- All request parameters must be set via POST request body in **JSON** format.\n- Each request should contain a `method` name parameter corresponding to the API method (case-sensitive).\n\n### Authentication\n\n- Tokens are used for authentication. Create a token on [your profile page](https://serpstat.com/users/profile/). \n- `token` is required for all API requests.\n- Api token is available for almost paid and trial plans that have API feature enabled.\n\n### Main concept\n\nThis API allows you to manage Projects. \n\nProject is a long term entity, in simple words, your domain that you do  SEO actions for. \n\nTo start Site audit or start tracking positions in SERPs you shoud create a new project with domain's name.\n\n\n\n### Pagination\n\nFor pagination, use the parameters:\n- `size`: number of results per page (default 100, maximum 1000);\n- `page`: page number (default is 1st page).\n\nPlease note: not all methods are supporting pagination.\n\n\n### Filters\n\nFilters can be applied to each method, most of them are specific for the method you used.\n`filters` object are optional for most methods.\n\n### Responses\n\n- All responses are in **JSON** format.\n- All responses have 200 HTTP status, even erroneous ones. In case of error, the response contains an `error` object instead of `result`.\n\n\n### API credits (limits)\n\nWhen calculating the used credits, your pricing plan's API requests are taken into account, including identical requests and requests for export.\n\n### Request rates\n\nMost subscription plans are limited to 1 request per second.\nTop-tier plans allow up to 10 requests per second.\nFor higher rate limits, contact our sales team.\nExceeding your rate limit will result in an error response.\n\n### Max results\n\nThe maximum number of results returned by each API method is limited up to 60,000 rows.\n",
+    "termsOfService": "",
+    "contact": {
+      "name": "Support",
+      "email": "support@serpstat.com",
+      "url": "https://serpstat.com"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "name": "CC BY 4.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.serpstat.com/v4",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/#ProjectProcedure.createProject": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "createProject",
+        "description": "Method `ProjectProcedure.createProject` allows to create a new project without using Serpstat's interface.\r\n\r\n <!-- theme: success -->\r\n> **Credits**: This method does not spend API credits.",
+        "operationId": "post-#ProjectProcedure.createProject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "API method name\t",
+                    "default": "ProjectProcedure.createProject",
+                    "example": "ProjectProcedure.createProject"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "domain": {
+                        "type": "string",
+                        "description": "The domain associated with the project. ",
+                        "format": "idn-hostname",
+                        "example": "test.com"
+                      },
+                      "name": {
+                        "type": "string",
+                        "description": "The name of the project. Can be the same as the domain or a custom name.",
+                        "example": "my project"
+                      },
+                      "groups": {
+                        "type": "array",
+                        "description": "A list of groups to associate with the project. If the group does not exist, it will be created.\r\n",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "description": "The name of the group the project belongs to."
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "required": [
+                      "domain",
+                      "name"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": 1,
+                    "method": "ProjectProcedure.createProject",
+                    "params": {
+                      "domain": "test.com",
+                      "name": "test.com",
+                      "groups": [
+                        {
+                          "name": "test"
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "ProjectProcedure.createProject",
+                    "params": {
+                      "domain": "test.com",
+                      "name": "my project",
+                      "groups": [
+                        {
+                          "name": "my first test group"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "description": "Contains the answer",
+                      "properties": {
+                        "project_id": {
+                          "type": "string",
+                          "description": " The unique ID of the created project."
+                        }
+                      },
+                      "required": [
+                        "project_id"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "project_id": "1268718"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "project_id": "1269328"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#ProjectProcedure.deleteProject": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "deleteProject",
+        "description": "The `ProjectProcedure.deleteProject` method allows you to delete an existing project from Serpstat.\r\n\r\n <!-- theme: success -->\r\n> **Credits**: This method does not spend API credits.",
+        "operationId": "post-#ProjectProcedure.deleteProject",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "API method name\t",
+                    "default": "ProjectProcedure.deleteProject",
+                    "example": "ProjectProcedure.deleteProject"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "project_id": {
+                        "type": "integer",
+                        "description": "The unique ID of the project to delete.",
+                        "example": 1268720
+                      }
+                    },
+                    "required": [
+                      "project_id"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": 1,
+                    "method": "ProjectProcedure.deleteProject",
+                    "params": {
+                      "project_id": 1234567
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "ProjectProcedure.deleteProject",
+                    "params": {
+                      "project_id": 1268720
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "boolean",
+                      "description": "The status of the operation:\r\n`true` – The project was successfully deleted.\r\n`false` – The operation failed."
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": true
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#ProjectProcedure.getProjects": {
+      "post": {
+        "tags": [
+          "Projects"
+        ],
+        "summary": "getProjects",
+        "description": "The `ProjectProcedure.getProjects` method retrieves a list of projects associated with the account. \r\nThis method provides details such as project ID, name, domain, creation date, and user role, allowing efficient project management without accessing the platform.\r\n\r\n <!-- theme: success -->\r\n> **Credits**: This method does not spend API credits.",
+        "operationId": "post-#ProjectProcedure.getProjects",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "API method name\t",
+                    "default": "ProjectProcedure.getProjects",
+                    "example": "ProjectProcedure.getProjects"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "type": "integer",
+                        "description": "The page number in the projects list.",
+                        "default": 1,
+                        "example": 1
+                      },
+                      "size": {
+                        "type": "integer",
+                        "description": "The number of results per page. Possible values: `20`, `50`, `100`, `200`, `500`.",
+                        "default": 100,
+                        "example": 20
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": 1,
+                    "method": "ProjectProcedure.getProjects",
+                    "params": {
+                      "page": 1,
+                      "size": 20
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "ProjectProcedure.getProjects",
+                    "params": {
+                      "page": 1,
+                      "size": 100
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "project_id": {
+                                "type": "string",
+                                "description": "The unique project ID."
+                              },
+                              "project_name": {
+                                "type": "string",
+                                "description": "The name of the project."
+                              },
+                              "domain": {
+                                "type": "string",
+                                "description": "The associated domain."
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "description": "The project creation date in `YYYY-MM-DDTHH:MM:SS` format."
+                              },
+                              "group": {
+                                "type": "string",
+                                "description": "The project group."
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Project's type (\"owner\" — you are the owner of this project, \"reader\" — the project's owner is a member of your team. **In case you use Team management.**)"
+                              }
+                            },
+                            "required": [
+                              "project_id",
+                              "project_name",
+                              "domain",
+                              "created_at",
+                              "group",
+                              "type"
+                            ]
+                          }
+                        },
+                        "summary_info": {
+                          "type": "object",
+                          "properties": {
+                            "page": {
+                              "type": "integer",
+                              "description": " The current page number."
+                            },
+                            "page_total": {
+                              "type": "integer",
+                              "description": "The total number of pages."
+                            },
+                            "count": {
+                              "type": "integer",
+                              "description": "The number of projects returned on the current page. This value matches the `size` parameter specified in the request."
+                            },
+                            "total": {
+                              "type": "integer",
+                              "description": "The total number of projects available."
+                            }
+                          },
+                          "required": [
+                            "page",
+                            "page_total",
+                            "count",
+                            "total"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "data",
+                        "summary_info"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "project_id": "1268718",
+                            "project_name": "my project",
+                            "domain": "test.com",
+                            "created_at": "2025-02-12T09:27:35",
+                            "group": "my first test group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1264776",
+                            "project_name": "furryuslugi.com",
+                            "domain": "furryuslugi.com",
+                            "created_at": "2025-01-12T16:45:02",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1254960",
+                            "project_name": "pumb.ua",
+                            "domain": "pumb.ua",
+                            "created_at": "2024-10-22T10:36:37",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1242714",
+                            "project_name": "ionity.ua",
+                            "domain": "ionity.ua",
+                            "created_at": "2024-07-10T11:59:15",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1242022",
+                            "project_name": "final test",
+                            "domain": "oneills.com",
+                            "created_at": "2024-07-03T11:55:14",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1241591",
+                            "project_name": "oneills.com/",
+                            "domain": "oneills.com",
+                            "created_at": "2024-06-28T14:52:14",
+                            "group": "lonni test",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1229131",
+                            "project_name": "eu.shop.battle.net",
+                            "domain": "eu.shop.battle.net",
+                            "created_at": "2024-04-02T16:09:14",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1226819",
+                            "project_name": "lonni API",
+                            "domain": "battle.net",
+                            "created_at": "2024-03-15T16:18:23",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1225820",
+                            "project_name": "serpstat.com",
+                            "domain": "serpstat.com",
+                            "created_at": "2024-03-08T15:59:49",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1151651",
+                            "project_name": "etcbuys.com",
+                            "domain": "etcbuys.com",
+                            "created_at": "2023-05-19T22:35:29",
+                            "group": "Default group",
+                            "type": "owner"
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "page_total": 1,
+                          "count": 100,
+                          "total": 10
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "project_id": "1268718",
+                            "project_name": "my project",
+                            "domain": "test.com",
+                            "created_at": "2025-02-12T09:27:35",
+                            "group": "my first test group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1264776",
+                            "project_name": "furryuslugi.com",
+                            "domain": "furryuslugi.com",
+                            "created_at": "2025-01-12T16:45:02",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1254960",
+                            "project_name": "pumb.ua",
+                            "domain": "pumb.ua",
+                            "created_at": "2024-10-22T10:36:37",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1242714",
+                            "project_name": "ionity.ua",
+                            "domain": "ionity.ua",
+                            "created_at": "2024-07-10T11:59:15",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1242022",
+                            "project_name": "final test",
+                            "domain": "oneills.com",
+                            "created_at": "2024-07-03T11:55:14",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1241591",
+                            "project_name": "oneills.com/",
+                            "domain": "oneills.com",
+                            "created_at": "2024-06-28T14:52:14",
+                            "group": "lonni test",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1229131",
+                            "project_name": "eu.shop.battle.net",
+                            "domain": "eu.shop.battle.net",
+                            "created_at": "2024-04-02T16:09:14",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1226819",
+                            "project_name": "lonni API",
+                            "domain": "battle.net",
+                            "created_at": "2024-03-15T16:18:23",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1225820",
+                            "project_name": "serpstat.com",
+                            "domain": "serpstat.com",
+                            "created_at": "2024-03-08T15:59:49",
+                            "group": "Default group",
+                            "type": "owner"
+                          },
+                          {
+                            "project_id": "1151651",
+                            "project_name": "etcbuys.com",
+                            "domain": "etcbuys.com",
+                            "created_at": "2023-05-19T22:35:29",
+                            "group": "Default group",
+                            "type": "owner"
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "page_total": 1,
+                          "count": 100,
+                          "total": 10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Projects",
+      "description": "Project management"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "id": {
+        "type": "string",
+        "title": "id",
+        "description": "Request / response identifier, prodvided from your side, will be mirrored from request to `id` in response. Example \"id\":\"123\"",
+        "x-examples": {
+          "Example 1": {
+            "id": "123"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ]
+}

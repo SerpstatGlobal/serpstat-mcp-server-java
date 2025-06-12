@@ -1,0 +1,1388 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "4.0",
+    "title": "Serpstat Keyword Volume Checker API",
+    "description": "### Current version: 4\n\nhttps://api.serpstat.com/v4 — Endpoint URL, through which all requests should be processed.\n\n### API protocol\n\n- Our API protocol is [**JSON-RPC 2.0**](https://www.jsonrpc.org/specification).\n\n### Requests\n\n- All requests should be sent via **POST** method.\n- All request parameters must be set via POST request body in **JSON** format.\n- Each request should contain a `method` name parameter corresponding to the API method (case-sensitive).\n\n### Authentication\n\n- Tokens are used for authentication. Create a token on [your profile page](https://serpstat.com/users/profile/). \n- `token` is required for all API requests.\n- Api token is available for almost paid and trial plans that have API feature enabled.\n\n### Pagination\n\nFor pagination, use the parameters:\n- `size`: number of results per page (default 100, maximum 1000);\n- `page`: page number (default is 1st page).\n\nPlease note: not all methods are supporting pagination.\n\n\n### Filters\n\nFilters can be applied to each method, most of them are specific for the method you used.\n`filters` object are optional for most methods.\n\n### Responses\n\n- All responses are in **JSON** format.\n- All responses have 200 HTTP status, even erroneous ones. In case of error, the response contains an `error` object instead of `result`.\n\n\n### Credits and pricing\n\n- This API has separate billing and credits type for this API are not included in any available subscription plan. [Contacts sales](https://data.serpstat.com/api-keyword-volume-checker/) for details.\n- The cost varies from $0.001 to $0.0005 depending on the volume of credits required\n- The minimum budget for the service is $300 \n- Unlimited number of requests per day and month.\n- Credits for SERP Crawling don't expire at the end of the month, you can use them when it is convenient for you.\n- All keywords accepted to task are billed after task submission.\n- Charged credits are not refundable.\n\n### Request rates\n\nMost subscription plans are limited to 1 request per second.\nTop-tier plans allow up to 10 requests per second.\nFor higher rate limits, contact our sales team.\nExceeding your rate limit will result in an error response.\n\n### Max results\n\nThe maximum number of results returned by each API method is limited up to 60,000 rows.\n",
+    "termsOfService": "",
+    "contact": {
+      "name": "Support",
+      "url": "https://serpstat.com",
+      "email": "support@serpstat.com"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "name": "CC BY 4.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.serpstat.com/v4",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/#SerpstatTaskProcedure.addKeywordListFreq": {
+      "post": {
+        "tags": [
+          "Keyword Volume Checker"
+        ],
+        "summary": "addKeywordListFreq",
+        "description": "The `SerpstatTaskProcedure.addKeywordListFreq` method sends keywords to volume parsing and returns a unique task key to be used for `SerpstatTaskProcedure.getTaskResult` to get parsing results. Keywords must be transferred as an array.\n\n<!-- theme: success -->\n> **Credits**: this method corresponds to specific limits. \nYou will find conditions and price details [here](https://data.serpstat.com/api-keyword-volume-checker/)\n",
+        "operationId": "post-#SerpstatTaskProcedure.addKeywordListFreq",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatTaskProcedure.addKeywordListFreq`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "keywords": {
+                        "type": "array",
+                        "description": "Keywords to get metrics (max 50000)",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "regionId": {
+                        "$ref": "#/components/schemas/regionId"
+                      },
+                      "typeId": {
+                        "$ref": "#/components/schemas/typeDeviceId"
+                      },
+                      "seId": {
+                        "$ref": "#/components/schemas/seId"
+                      }
+                    },
+                    "required": [
+                      "keywords",
+                      "regionId"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "SerpstatTaskProcedure.addKeywordListFreq",
+                    "params": {
+                      "keywords": [
+                        "iphone",
+                        "iphone X",
+                        "iphone 10",
+                        "iphone 11",
+                        "iphone 12",
+                        "iphone 13"
+                      ],
+                      "typeId": 1,
+                      "seId": 1,
+                      "regionId": 2840
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatTaskProcedure.addKeywordListFreq",
+                    "params": {
+                      "keywords": [
+                        "iphone",
+                        "iphone X",
+                        "iphone 10",
+                        "iphone 11",
+                        "iphone 12",
+                        "iphone 13"
+                      ],
+                      "typeId": 1,
+                      "seId": 1,
+                      "regionId": 2840
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/requestId"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "taskId": {
+                          "$ref": "#/components/schemas/taskId"
+                        },
+                        "accepted": {
+                          "type": "integer",
+                          "description": "Total number of keywords set for parsing excluding blocked"
+                        },
+                        "duplicates_cleaned": {
+                          "type": "integer",
+                          "description": "The number of duplicated keywords that have been cleared, the credits for them will not be charged."
+                        },
+                        "blocked": {
+                          "type": "array",
+                          "description": "Array with blocked keywords. Credits are not charged.",
+                          "items": {
+                            "type": "object"
+                          }
+                        }
+                      },
+                      "required": [
+                        "taskId",
+                        "accepted",
+                        "duplicates_cleaned",
+                        "blocked"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "taskId": "aa28e2a5-a81c-43c9-b441-50d82e8e182e",
+                        "accepted": 6,
+                        "duplicates_cleaned": 0,
+                        "blocked": []
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "taskId": "aa28e2a5-a81c-43c9-b441-50d82e8e182e",
+                        "accepted": 6,
+                        "duplicates_cleaned": 0,
+                        "blocked": []
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#SerpstatTaskProcedure.getTaskResult": {
+      "post": {
+        "tags": [
+          "Keyword Volume Checker"
+        ],
+        "summary": "getTaskResult",
+        "description": "The `SerpstatTaskProcedure.getTaskResult` method brings in volume parsing results using `taskId` which was obtained with `SerpstatTaskProcedure.addKeywordListFreq`.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API credits.",
+        "operationId": "post-#SerpstatTaskProcedure.getTaskResult",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatTaskProcedure.getTaskResult`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "taskId": {
+                        "$ref": "#/components/schemas/taskId"
+                      },
+                      "page": {
+                        "type": "integer",
+                        "description": "Page number",
+                        "minimum": 1,
+                        "default": 1
+                      },
+                      "pageSize": {
+                        "type": "integer",
+                        "description": "Number of results per a page",
+                        "minimum": 10,
+                        "default": 100
+                      }
+                    },
+                    "required": [
+                      "taskId"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "SerpstatTaskProcedure.getTaskResult",
+                    "params": {
+                      "taskId": "aa28e2a5-a81c-43c9-b441-50d82e8e182e",
+                      "page": 1,
+                      "pageSize": 10
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatTaskProcedure.getTaskResult",
+                    "params": {
+                      "taskId": "aa28e2a5-a81c-43c9-b441-50d82e8e182e",
+                      "page": 1,
+                      "pageSize": 10
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/requestId"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "description": "Total number of keywords for a task excluding blocked and duplicates"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "Ordinal number of results page"
+                        },
+                        "pageSize": {
+                          "type": "integer",
+                          "description": "Number of results found on a page"
+                        },
+                        "taskMeta": {
+                          "type": "object",
+                          "properties": {
+                            "typeId": {
+                              "$ref": "#/components/schemas/typeDeviceId"
+                            },
+                            "seId": {
+                              "$ref": "#/components/schemas/seId"
+                            },
+                            "regionId": {
+                              "$ref": "#/components/schemas/regionId"
+                            },
+                            "match": {
+                              "type": "string",
+                              "enum": [
+                                "exact"
+                              ],
+                              "description": "Match type"
+                            }
+                          },
+                          "required": [
+                            "typeId",
+                            "seId",
+                            "regionId",
+                            "match"
+                          ]
+                        },
+                        "keywords": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "keyword": {
+                                "type": "string",
+                                "description": "Keyword with obtained volume parameters, CPC and filters"
+                              },
+                              "keyword.raw": {
+                                "type": "string",
+                                "description": "Keyword sent for position check by user. Exclude special elements for position check (*, +, -, @, ~, !, &, |, (, ), :, ,, ., ;)\t"
+                              },
+                              "status": {
+                                "type": "integer",
+                                "description": "Position check statuses are following:\n* **2** - position check completed successfully. Data is in keyword data.\n* **4** - error getting data from Google.\n\nPossible reasons for the error:\n1. A prohibited data region was selected: Cuba, Iran, Sudan, Syria, North Korea, russia [terrorist country];\n2. Google did not provide information for the phrase;\n3. Google replaced some of the characters in the phrase. In this case, we cannot provide information about the original wording of the phrase."
+                              },
+                              "cost": {
+                                "type": "number",
+                                "description": "Average CPC in Google Ads for the last year in USD"
+                              },
+                              "searchVolume": {
+                                "type": "integer",
+                                "description": "Search volume for the selected region and match type"
+                              },
+                              "competition": {
+                                "type": "integer",
+                                "description": "Keyword competition in Google Ads for Google (1-100%), the keyword percentage slots for Ad in the selected region"
+                              },
+                              "searchVolumeHistory": {
+                                "type": "array",
+                                "description": "Keyword search volume history for the last 12 months",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "date": {
+                                      "type": "string",
+                                      "description": "the first day of a month in the format `YYYY-MM-DDTHH:MM:SS`"
+                                    },
+                                    "value": {
+                                      "type": "integer",
+                                      "description": "Monthly search volume"
+                                    }
+                                  },
+                                  "required": [
+                                    "date",
+                                    "value"
+                                  ]
+                                }
+                              }
+                            },
+                            "required": [
+                              "keyword",
+                              "keyword.raw",
+                              "status",
+                              "cost",
+                              "searchVolume",
+                              "competition"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "total",
+                        "page",
+                        "pageSize"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "total": 6,
+                        "page": 1,
+                        "pageSize": 10,
+                        "taskMeta": {
+                          "typeId": "1",
+                          "seId": "1",
+                          "regionId": "2840",
+                          "match": "exact"
+                        },
+                        "keywords": [
+                          {
+                            "keyword": "iphone",
+                            "keyword.raw": "iphone",
+                            "status": 2,
+                            "cost": 2.66,
+                            "searchVolume": 1220000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 1220000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 1220000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 1500000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 1500000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 1830000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 1220000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 1220000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 1500000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 1220000
+                              }
+                            ],
+                            "competition": 100
+                          },
+                          {
+                            "keyword": "iphone X",
+                            "keyword.raw": "iphone X",
+                            "status": 2,
+                            "cost": 0.66,
+                            "searchVolume": 135000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 201000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 201000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 165000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 165000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 165000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 165000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 90500
+                              }
+                            ],
+                            "competition": 89
+                          },
+                          {
+                            "keyword": "iphone 11",
+                            "keyword.raw": "iphone 11",
+                            "status": 2,
+                            "cost": 0.24,
+                            "searchVolume": 450000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 301000
+                              }
+                            ],
+                            "competition": 100
+                          },
+                          {
+                            "keyword": "iphone 10",
+                            "keyword.raw": "iphone 10",
+                            "status": 2,
+                            "cost": 0.11,
+                            "searchVolume": 110000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 90500
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 90500
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 90500
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 135000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 90500
+                              }
+                            ],
+                            "competition": 93
+                          },
+                          {
+                            "keyword": "iphone 12",
+                            "keyword.raw": "iphone 12",
+                            "status": 2,
+                            "cost": 0.81,
+                            "searchVolume": 550000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 368000
+                              }
+                            ],
+                            "competition": 100
+                          },
+                          {
+                            "keyword": "iphone 13",
+                            "keyword.raw": "iphone 13",
+                            "status": 2,
+                            "cost": 0.66,
+                            "searchVolume": 823000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 823000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 823000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 823000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 823000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 550000
+                              }
+                            ],
+                            "competition": 100
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "total": 6,
+                        "page": 1,
+                        "pageSize": 10,
+                        "taskMeta": {
+                          "typeId": "1",
+                          "seId": "1",
+                          "regionId": "2840",
+                          "match": "exact"
+                        },
+                        "keywords": [
+                          {
+                            "keyword": "iphone",
+                            "keyword.raw": "iphone",
+                            "status": 2,
+                            "cost": 2.66,
+                            "searchVolume": 1220000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 1220000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 1220000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 1500000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 1500000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 1830000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 1220000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 1220000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 1500000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 1220000
+                              }
+                            ],
+                            "competition": 100
+                          },
+                          {
+                            "keyword": "iphone X",
+                            "keyword.raw": "iphone X",
+                            "status": 2,
+                            "cost": 0.66,
+                            "searchVolume": 135000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 201000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 201000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 165000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 165000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 165000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 165000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 90500
+                              }
+                            ],
+                            "competition": 89
+                          },
+                          {
+                            "keyword": "iphone 11",
+                            "keyword.raw": "iphone 11",
+                            "status": 2,
+                            "cost": 0.24,
+                            "searchVolume": 450000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 301000
+                              }
+                            ],
+                            "competition": 100
+                          },
+                          {
+                            "keyword": "iphone 10",
+                            "keyword.raw": "iphone 10",
+                            "status": 2,
+                            "cost": 0.11,
+                            "searchVolume": 110000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 90500
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 90500
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 90500
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 135000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 110000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 90500
+                              }
+                            ],
+                            "competition": 93
+                          },
+                          {
+                            "keyword": "iphone 12",
+                            "keyword.raw": "iphone 12",
+                            "status": 2,
+                            "cost": 0.81,
+                            "searchVolume": 550000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 450000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 550000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 368000
+                              }
+                            ],
+                            "competition": 100
+                          },
+                          {
+                            "keyword": "iphone 13",
+                            "keyword.raw": "iphone 13",
+                            "status": 2,
+                            "cost": 0.66,
+                            "searchVolume": 823000,
+                            "searchVolumeHistory": [
+                              {
+                                "date": "2024-02-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-03-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-04-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-05-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-06-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-07-01T00:00:00",
+                                "value": 823000
+                              },
+                              {
+                                "date": "2024-08-01T00:00:00",
+                                "value": 673000
+                              },
+                              {
+                                "date": "2024-09-01T00:00:00",
+                                "value": 1000000
+                              },
+                              {
+                                "date": "2024-10-01T00:00:00",
+                                "value": 823000
+                              },
+                              {
+                                "date": "2024-11-01T00:00:00",
+                                "value": 823000
+                              },
+                              {
+                                "date": "2024-12-01T00:00:00",
+                                "value": 823000
+                              },
+                              {
+                                "date": "2025-01-01T00:00:00",
+                                "value": 550000
+                              }
+                            ],
+                            "competition": 100
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#SerpstatTaskProcedure.getTaskStatus": {
+      "post": {
+        "tags": [
+          "Keyword Volume Checker"
+        ],
+        "summary": "getTaskStatus",
+        "description": "The `SerpstatTaskProcedure.getTaskStatus` method helps to obtain a position's check status with `taskId` by `SerpstatTaskProcedure.addKeywordListFreq`.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API credits.",
+        "operationId": "post-#SerpstatTaskProcedure.getTaskStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/requestId"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatTaskProcedure.getTaskStatus`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "taskId": {
+                        "$ref": "#/components/schemas/taskId"
+                      }
+                    },
+                    "required": [
+                      "taskId"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "SerpstatTaskProcedure.getTaskStatus",
+                    "params": {
+                      "taskId": "aa28e2a5-a81c-43c9-b441-50d82e8e182e"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatTaskProcedure.getTaskStatus",
+                    "params": {
+                      "taskId": "aa28e2a5-a81c-43c9-b441-50d82e8e182e"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/requestId"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "totalKeywords": {
+                          "type": "integer",
+                          "description": "Total number of keywords in a task flagged for position checking"
+                        },
+                        "keywordsStatusCount": {
+                          "type": "array",
+                          "description": "Array with statuses",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "type": "integer",
+                                "description": "The possible statuses for position checks are as follows:\n\n* **0** - The keyword is stored and ready for parsing.\n* **1** - The keyword has been sent for a position check (in progress).\n* **2** - The position check was completed successfully, and the data is available.\n* **3** - Error occurred while sending the keyword to the queue.\n* **4** - Position check failed due to an error.",
+                                "maximum": 4
+                              },
+                              "count": {
+                                "type": "integer",
+                                "description": "Number of keywords with stated above status"
+                              }
+                            },
+                            "required": [
+                              "status",
+                              "count"
+                            ]
+                          }
+                        },
+                        "progress": {
+                          "type": "integer",
+                          "description": "Task progress. Total keywords ratio in a task to the number of keywords with 2-4 status (percentage)"
+                        }
+                      },
+                      "required": [
+                        "totalKeywords",
+                        "progress"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "totalKeywords": 6,
+                        "keywordsStatusCount": [
+                          {
+                            "status": 2,
+                            "count": 6
+                          }
+                        ],
+                        "progress": 100
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "totalKeywords": 6,
+                        "keywordsStatusCount": [
+                          {
+                            "status": 2,
+                            "count": 6
+                          }
+                        ],
+                        "progress": 100
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Keyword Volume Checker"
+    },
+    {
+      "name": "Top Parsing"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "requestId": {
+        "type": "string",
+        "title": "requestId",
+        "description": "The request identifier provided by the client. It will be echoed as field `id` in the response. Example `\"id\":\"123\"`"
+      },
+      "regionId": {
+        "type": "integer",
+        "title": "regionId",
+        "description": "Region or city identifier. Reffer to full list of [region ids](https://docs.google.com/spreadsheets/d/1LUDtm-L1qWMVpmWuN-nvDyYFfQtfiXUh5LIHE8sjs0k/edit#gid=75443986)\n\nExample: `21176`(Texas)",
+        "minimum": 1
+      },
+      "typeDeviceId": {
+        "type": "integer",
+        "title": "typeId",
+        "description": "Device type identifier\n\n* **1** — Desktop\n* **2** — Mobile",
+        "minimum": 1,
+        "maximum": 2,
+        "default": 1
+      },
+      "seId": {
+        "type": "integer",
+        "enum": [
+          1
+        ],
+        "title": "seId",
+        "description": "Search engine identifier\n\n* **1** — Google",
+        "default": 1
+      },
+      "taskId": {
+        "type": "string",
+        "title": "task_id",
+        "description": "Query id to get parsing results with `SerpstatTaskProcedure.getTaskResult`",
+        "example": "bc0a46cc-357e-4706-a674-1e8166f81fb2"
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string",
+      "description": "Domain name to analyze",
+      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\\.[a-zA-Z]{2,}$",
+      "minLength": 4,
+      "maxLength": 253
+    },
+    "se": {
+      "type": "string",
+      "description": "Search engine database ID",
+      "enum": [
+        "g_us", "g_uk", "g_au", "g_ca", "g_de",
+        "g_fr", "g_ru", "g_br", "g_mx", "g_es",
+        "g_it", "b_us", "y_ru"
+      ],
+      "default": "g_us"
+    },
+    "withSubdomains": {
+      "type": "boolean",
+      "description": "Include subdomains in analysis",
+      "default": false
+    },
+    "withIntents": {
+      "type": "boolean",
+      "description": "Include keyword intents (works for g_ua and g_us only)",
+      "default": false
+    },
+    "url": {
+      "type": "string",
+      "description": "Specific URL to filter results",
+      "format": "uri"
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Array of keywords to search for",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "maxItems": 50
+    },
+    "minusKeywords": {
+      "type": "array",
+      "description": "Array of keywords to exclude from search",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100
+      },
+      "maxItems": 50
+    },
+    "page": {
+      "type": "integer",
+      "description": "Page number",
+      "minimum": 1,
+      "default": 1
+    },
+    "size": {
+      "type": "integer",
+      "description": "Number of results per page",
+      "minimum": 1,
+      "maximum": 1000,
+      "default": 100
+    },
+    "sort": {
+      "type": "object",
+      "description": "Sort configuration",
+      "properties": {
+        "position": {
+          "type": "string",
+          "enum": ["asc", "desc"]
+        },
+        "region_queries_count": {
+          "type": "string",
+          "enum": ["asc", "desc"]
+        },
+        "cost": {
+          "type": "string",
+          "enum": ["asc", "desc"]
+        },
+        "traff": {
+          "type": "string",
+          "enum": ["asc", "desc"]
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["asc", "desc"]
+        },
+        "keyword_length": {
+          "type": "string",
+          "enum": ["asc", "desc"]
+        },
+        "concurrency": {
+          "type": "string",
+          "enum": ["asc", "desc"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "filters": {
+      "type": "object",
+      "description": "Filter conditions",
+      "properties": {
+        "position": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "position_from": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "position_to": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cost": {
+          "type": "number",
+          "minimum": 0
+        },
+        "cost_from": {
+          "type": "number",
+          "minimum": 0
+        },
+        "cost_to": {
+          "type": "number",
+          "minimum": 0
+        },
+        "region_queries_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "region_queries_count_from": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "region_queries_count_to": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "traff": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "difficulty": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "difficulty_from": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "difficulty_to": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "keyword_length": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "concurrency_from": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "concurrency_to": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "right_spelling": {
+          "type": "boolean"
+        },
+        "keyword_contain": {
+          "type": "string"
+        },
+        "keyword_not_contain": {
+          "type": "string"
+        },
+        "intents_contain": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["informational", "navigational", "commercial", "transactional"]
+          }
+        },
+        "intents_not_contain": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["informational", "navigational", "commercial", "transactional"]
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["domain", "se"],
+  "additionalProperties": false
+}

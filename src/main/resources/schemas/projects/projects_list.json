@@ -1,0 +1,18 @@
+{
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "integer",
+      "description": "Page number in projects list",
+      "minimum": 1,
+      "default": 1
+    },
+    "size": {
+      "type": "integer",
+      "description": "Number of results per page",
+      "enum": [20, 50, 100, 200, 500],
+      "default": 20
+    }
+  },
+  "additionalProperties": false
+}

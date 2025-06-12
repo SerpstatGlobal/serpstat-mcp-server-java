@@ -1,0 +1,969 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "4.0",
+    "title": "Team Management API",
+    "description": "### Current version: 4\n\nhttps://api.serpstat.com/v4 — Endpoint URL, through which all requests should be processed.\n\n### API protocol\n\n- Our API protocol is [**JSON-RPC 2.0**](https://www.jsonrpc.org/specification).\n\n### Requests\n\n- All requests should be sent via **POST** method.\n- All request parameters must be set via POST request body in **JSON** format.\n- Each request should contain a `method` name parameter corresponding to the API method (case-sensitive).\n\n### Authentication\n\n- Tokens are used for authentication. Create a token on [your profile page](https://serpstat.com/users/profile/). \n- `token` is required for all API requests.\n- Api token is available for almost paid and trial plans that have API feature enabled.\n\n### Pagination\n\nFor pagination, use the parameters:\n- `size`: number of results per page (default 100, maximum 1000);\n- `page`: page number (default is 1st page).\n\nPlease note: not all methods are supporting pagination.\n\n\n### Filters\n\nFilters can be applied to each method, most of them are specific for the method you used.\n`filters` object are optional for most methods.\n\n### Responses\n\n- All responses are in **JSON** format.\n- All responses have 200 HTTP status, even erroneous ones. In case of error, the response contains an `error` object instead of `result`.\n\n\n### API credits (limits)\n\nWhen calculating the used credits, your pricing plan's API requests are taken into account, including identical requests and requests for export.\n\n### Request rates\n\nMost subscription plans are limited to 1 request per second.\nTop-tier plans allow up to 10 requests per second.\nFor higher rate limits, contact our sales team.\nExceeding your rate limit will result in an error response.\n\n### Max results\n\nThe maximum number of results returned by each API method is limited up to 60,000 rows.\n",
+    "termsOfService": "https://serpstat.com/users/license-agreement/",
+    "contact": {
+      "url": "https://serpstat.com",
+      "email": "support@serpstat.com",
+      "name": "Support"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "name": "CC BY 4.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.serpstat.com/v4",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/#TeamManagement.activateUser": {
+      "post": {
+        "tags": [
+          "Team Management"
+        ],
+        "summary": "activateUser",
+        "description": "The `TeamManagement.activateUser` method activates inactive user in your team. In order to activate user you need to specify the user's ID (`user_id`). User's ID can be found using `TeamManagement.getList` method.\n\nThis method duplicates Team management functionality in the [user interface](https://serpstat.com/users/management/).\n\n> Only unregistered users or registered users who are on the Free plan and didn't have paid plan earlier can be invited to the team.\n\n> The team management API is available only to team managers and for plans of mid-tier and above.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API Credits.\n",
+        "operationId": "post-#TeamManagement.activateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "must be exact `TeamManagement.activateUser`",
+                    "example": "TeamManagement.activateUser"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "user_id": {
+                        "type": "integer",
+                        "description": "User identifier at Serpstat.",
+                        "example": 5555
+                      }
+                    },
+                    "required": [
+                      "user_id"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "1",
+                    "method": "TeamManagement.addUser",
+                    "params": {
+                      "email": "johndoe@example.test"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "TeamManagement.activateUser",
+                    "params": {
+                      "user_id": 5555
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "description": "`true` in case of success, `false` if operation was unsuccessfull"
+                        },
+                        "user_id": {
+                          "type": "integer",
+                          "description": "user identifier",
+                          "example": 5555
+                        },
+                        "limits": {
+                          "type": "object",
+                          "description": "Your team seats credits usage",
+                          "properties": {
+                            "total": {
+                              "type": "integer",
+                              "description": "Total seats available for your team.",
+                              "example": 10000
+                            },
+                            "used": {
+                              "type": "integer",
+                              "description": "Used active seats in your team",
+                              "example": 5
+                            },
+                            "left": {
+                              "type": "integer",
+                              "description": "Available active seats in your team",
+                              "example": 9995
+                            }
+                          },
+                          "required": [
+                            "total",
+                            "used",
+                            "left"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "user_id",
+                        "limits"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "success": true,
+                        "user_id": 1674943,
+                        "limits": {
+                          "total": 10,
+                          "used": 2,
+                          "left": 8
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "125",
+                      "result": {
+                        "success": true,
+                        "user_id": 5555,
+                        "limits": {
+                          "total": 10000,
+                          "used": 5,
+                          "left": 9995
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#TeamManagement.addUser": {
+      "post": {
+        "tags": [
+          "Team Management"
+        ],
+        "summary": "addUser",
+        "description": "The `TeamManagement.addUser` method invites new user to join your team. In order to send invitation you need to specify the user's email.\n\nThis method duplicates Team management functionality in the [user interface](https://serpstat.com/users/management/).\n\n> Only unregistered users or registered users who are on the Free plan and didn't have paid plan earlier can be invited to the team.\n\n> The team management API is available only to team managers and for plans of mid-tier and above.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API Credits.",
+        "operationId": "post-#TeamManagement.addUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "must be exact `TeamManagement.addUser`",
+                    "example": "TeamManagement.addUser"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "user email",
+                        "example": "john.doe@example.local"
+                      }
+                    },
+                    "required": [
+                      "email"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "1",
+                    "method": "TeamManagement.addUser",
+                    "params": {
+                      "email": "johndoe@example.test"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "TeamManagement.addUser",
+                    "params": {
+                      "email": "john.doe@example.local"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "description": "result object for your request",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "description": "`true` in case of successfull addition, `false` if not"
+                        },
+                        "user_id": {
+                          "type": "integer",
+                          "description": "User's identifier at Serpstat",
+                          "example": 5555
+                        },
+                        "limits": {
+                          "type": "object",
+                          "description": "Summary info about seats in your team after this action",
+                          "properties": {
+                            "total": {
+                              "type": "integer",
+                              "description": "Total seats for your subscription plan."
+                            },
+                            "used": {
+                              "type": "integer",
+                              "description": "Used seats in your team. Please note: deactivated users also take seats. To free seats you have to delete them via `TeamManagement.removeUser` method."
+                            },
+                            "left": {
+                              "type": "integer",
+                              "description": "Free seats in your team."
+                            }
+                          },
+                          "required": [
+                            "total",
+                            "used",
+                            "left"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "user_id",
+                        "limits"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "success": true,
+                        "user_id": 1674943,
+                        "limits": {
+                          "total": 10,
+                          "used": 2,
+                          "left": 8
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "126",
+                      "result": {
+                        "success": true,
+                        "user_id": 5555,
+                        "limits": {
+                          "total": 10,
+                          "used": 2,
+                          "left": 8
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#TeamManagement.getList": {
+      "post": {
+        "tags": [
+          "Team Management"
+        ],
+        "summary": "getList",
+        "description": "The `TeamManagement.getList` method returns list of all users in your team. This list includes team owner as well.\n\nThis method duplicates basic UI functions: get list of your team members or search for specific member.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API Credits.",
+        "operationId": "post-#TeamManagement.getList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "must be exact `TeamManagement.getList`",
+                    "example": "TeamManagement.getList"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Optional object for filtering, pagination and search purposes.",
+                    "properties": {
+                      "search": {
+                        "type": "string",
+                        "description": "Optional part of email of member you need to find",
+                        "example": "@"
+                      },
+                      "page": {
+                        "type": "integer",
+                        "description": "page number for pagination",
+                        "example": 1
+                      },
+                      "size": {
+                        "type": "integer",
+                        "description": "records per page",
+                        "example": 10
+                      }
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "method"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "1",
+                    "method": "TeamManagement.getList",
+                    "params": {
+                      "search": "@",
+                      "page": 1,
+                      "size": 20
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "description": "result object for your request",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "description": "Array of objects contais info about your team members",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "user_id": {
+                                "type": "integer",
+                                "description": "User identifier at Serpstat.",
+                                "example": 5555
+                              },
+                              "email": {
+                                "type": "string",
+                                "description": "user email",
+                                "example": "john.doe@example.local"
+                              },
+                              "status": {
+                                "type": "integer",
+                                "description": "status of user in team: 1 - active, 0 - not yet activated, 2 - deactivated",
+                                "example": 1
+                              },
+                              "first_name": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "first name",
+                                "example": "John"
+                              },
+                              "last_name": {
+                                "type": "string",
+                                "nullable": true,
+                                "description": "last name",
+                                "example": "Doe"
+                              }
+                            },
+                            "required": [
+                              "user_id",
+                              "email",
+                              "status",
+                              "first_name",
+                              "last_name"
+                            ]
+                          }
+                        },
+                        "summary_info": {
+                          "type": "object",
+                          "description": "Object contains data about search resuls and pagination",
+                          "properties": {
+                            "total": {
+                              "type": "string",
+                              "description": "Total found results if you used search or total members in your team",
+                              "example": "1"
+                            },
+                            "page": {
+                              "type": "integer",
+                              "description": "page number if you used pagination",
+                              "example": 1
+                            }
+                          },
+                          "required": [
+                            "total",
+                            "page"
+                          ]
+                        },
+                        "limits": {
+                          "type": "object",
+                          "description": "Object contains summary info about seats in your team",
+                          "properties": {
+                            "total": {
+                              "type": "integer",
+                              "description": "Total seats in your subscription plan including team owner seat.",
+                              "example": 10
+                            },
+                            "used": {
+                              "type": "integer",
+                              "description": "Used seats in your team. Please note: inactive users also take up seats.",
+                              "example": 1
+                            },
+                            "left": {
+                              "type": "integer",
+                              "description": "Available seats in your team.",
+                              "example": 9
+                            }
+                          },
+                          "required": [
+                            "total",
+                            "used",
+                            "left"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "data",
+                        "summary_info",
+                        "limits"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "user_id": 13,
+                            "email": "m.karboinov@netpeak.net",
+                            "status": 1,
+                            "first_name": "",
+                            "last_name": ""
+                          },
+                          {
+                            "user_id": 32,
+                            "email": "a.datsenko@netpeak.net",
+                            "status": 1,
+                            "first_name": null,
+                            "last_name": null
+                          },
+                          {
+                            "user_id": 1917,
+                            "email": "i.meniv@netpeak.net",
+                            "status": 1,
+                            "first_name": "Iryna",
+                            "last_name": "Meniv"
+                          }
+                        ],
+                        "summary_info": {
+                          "total": "585",
+                          "page": 1
+                        },
+                        "limits": {
+                          "total": 1000,
+                          "used": 585,
+                          "left": 415
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#TeamManagement.deactivateUser": {
+      "post": {
+        "tags": [
+          "Team Management"
+        ],
+        "summary": "deactivateUser",
+        "description": "The `TeamManagement.deactivateUser` method deactivates active user in your team. In order to deactivate user you need to specify the user's ID. \n\nUser's ID can be found using `TeamManagement.getList` method.\n\nAfter deactivation user would lose access to Serpstat completelly.\n\n> Please note: To free a seat in your team you have to delete user from your team via `TeamManagement.removeUser` method after deactivating.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API Credits.",
+        "operationId": "post-#TeamManagement.deactivateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "must be exact `TeamManagement.deactivateUser`",
+                    "example": "TeamManagement.deactivateUser"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "Object with params",
+                    "properties": {
+                      "user_id": {
+                        "type": "integer",
+                        "description": "User identifier at Serpstat. Can be obtained via `TeamManagement.getList` method",
+                        "example": 5555
+                      }
+                    },
+                    "required": [
+                      "user_id"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "1",
+                    "method": "TeamManagement.deactivateUser",
+                    "params": {
+                      "user_id": 12345
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "2XX": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "description": "result object for your request",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "description": "`true` in case of successfull deactivation, `false` if not"
+                        },
+                        "user_id": {
+                          "type": "integer",
+                          "description": "User identifier at Serpstat",
+                          "example": 5555
+                        },
+                        "limits": {
+                          "type": "object",
+                          "description": "Summary info about seats in your team after this action",
+                          "properties": {
+                            "total": {
+                              "type": "integer",
+                              "description": "Total seats for your subscription plan.",
+                              "example": 10
+                            },
+                            "used": {
+                              "type": "integer",
+                              "description": "Used seats in your team. Please note: deactivated users also take seats. To free seats you have to delete them via `TeamManagement.removeUser` method. ",
+                              "example": 2
+                            },
+                            "left": {
+                              "type": "integer",
+                              "description": "Free seats in your team.",
+                              "example": 8
+                            }
+                          },
+                          "required": [
+                            "total",
+                            "used",
+                            "left"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "user_id",
+                        "limits"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "success": true,
+                        "user_id": 2057710,
+                        "limits": {
+                          "total": 10,
+                          "used": 3,
+                          "left": 7
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#TeamManagement.removeUser": {
+      "post": {
+        "tags": [
+          "Team Management"
+        ],
+        "summary": "removeUser",
+        "description": "The `TeamManagement.removeUser` method removes existing user from your team. \n\nIn order to remove user you need to specify the user's ID. \n\nUser's ID can be found using `TeamManagement.getList` method.\n\nIf you set parameter `merge_projects` to `true` all user's projects will be transfered to the team owner, including all history data/\n\nIf a user has not been previously deactivated via `TeamManagement.deactivateUser` method, they will retain access to the Serpstat UI but will lose access to all projects they own.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API Credits.\n\n<!-- theme: danger -->\n> **Caution**: Use this method carefully. You can lose user's projects and their history.",
+        "operationId": "post-#TeamManagement.removeUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `TeamManagement.removeUser`",
+                    "example": "TeamManagement.removeUser"
+                  },
+                  "params": {
+                    "type": "object",
+                    "description": "requred params",
+                    "properties": {
+                      "user_id": {
+                        "type": "integer",
+                        "description": "User id at Serpstat. Can be found using `TeamManagement.getList` method."
+                      },
+                      "merge_projects": {
+                        "type": "boolean",
+                        "description": "`true` - transfer user's projects to the team owner.\n`false` - projects will be deleted"
+                      }
+                    },
+                    "required": [
+                      "user_id",
+                      "merge_projects"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "1",
+                    "method": "TeamManagement.removeUser",
+                    "params": {
+                      "user_id": 12345,
+                      "merge_projects": true
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "TeamManagement.removeUser",
+                    "params": {
+                      "user_id": 5555,
+                      "merge_projects": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "description": "result object for your request",
+                      "properties": {
+                        "success": {
+                          "type": "boolean",
+                          "description": "`true` in case of successfull deactivation, `false` if not"
+                        },
+                        "user_id": {
+                          "type": "integer",
+                          "description": "User's identifier at Serpstat",
+                          "example": 5555
+                        },
+                        "limits": {
+                          "type": "object",
+                          "description": "Summary info about seats in your team after this action",
+                          "properties": {
+                            "total": {
+                              "type": "integer",
+                              "description": "Total seats for your subscription plan.",
+                              "example": 10
+                            },
+                            "used": {
+                              "type": "integer",
+                              "description": "Used seats in your team.",
+                              "example": 2
+                            },
+                            "left": {
+                              "type": "integer",
+                              "description": "Free seats in your team.",
+                              "example": 8
+                            }
+                          },
+                          "required": [
+                            "total",
+                            "used",
+                            "left"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "user_id",
+                        "limits"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "result"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "success": true,
+                        "user_id": 5555,
+                        "limits": {
+                          "total": 10,
+                          "used": 2,
+                          "left": 8
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "128",
+                      "result": {
+                        "success": true,
+                        "user_id": 5555,
+                        "limits": {
+                          "total": 10,
+                          "used": 2,
+                          "left": 8
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Team Management",
+      "description": "Team Management Methods"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "id": {
+        "type": "string",
+        "title": "id",
+        "description": "Request / response identifier, prodvided from your side, will be mirrored from request to `id` in response. Example \"id\":\"123\"",
+        "x-examples": {
+          "Example 1": {
+            "id": "123"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ]
+}

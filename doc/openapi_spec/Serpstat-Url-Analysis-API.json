@@ -1,0 +1,1800 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "4.0",
+    "title": "Serpstat Url Analysis API",
+    "description": "### Current version: 4\n\nhttps://api.serpstat.com/v4 — Endpoint URL, through which all requests should be processed.\n\n### API protocol\n\n- Our API protocol is [**JSON-RPC 2.0**](https://www.jsonrpc.org/specification).\n\n### Requests\n\n- All requests should be sent via **POST** method.\n- All request parameters must be set via POST request body in **JSON** format.\n- Each request should contain a `method` name parameter corresponding to the API method (case-sensitive).\n\n### Authentication\n\n- Tokens are used for authentication. Create a token on [your profile page](https://serpstat.com/users/profile/). \n- `token` is required for all API requests.\n- Api token is available for almost paid and trial plans that have API feature enabled.\n\n### Pagination\n\nFor pagination, use the parameters:\n- `size`: number of results per page (default 100, maximum 1000);\n- `page`: page number (default is 1st page).\n\nPlease note: not all methods are supporting pagination.\n\n\n### Filters\n\nFilters can be applied to each method, most of them are specific for the method you used.\n`filters` object are optional for most methods.\n\n### Responses\n\n- All responses are in **JSON** format.\n- All responses have 200 HTTP status, even erroneous ones. In case of error, the response contains an `error` object instead of `result`.\n\n\n### API credits (limits)\n\nWhen calculating the used credits, your pricing plan's API requests are taken into account, including identical requests and requests for export.\n\n### Request rates\n\nMost subscription plans are limited to 1 request per second.\nTop-tier plans allow up to 10 requests per second.\nFor higher rate limits, contact our sales team.\nExceeding your rate limit will result in an error response.\n\n### Max results\n\nThe maximum number of results returned by each API method is limited up to 60,000 rows.\n",
+    "termsOfService": "",
+    "contact": {
+      "name": "Support",
+      "url": "https://serpstat.com",
+      "email": "support@serpstat.com"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "name": "CC BY 4.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.serpstat.com/v4",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/#SerpstatUrlProcedure.getSummaryTraffic": {
+      "post": {
+        "tags": [
+          "Url Analysis"
+        ],
+        "summary": "getSummaryTraffic",
+        "description": "The `SerpstatUrlProcedure.getSummaryTraffic` method returns traffic and keyword statistics for website pages that match a specific URL mask.\r\n\r\n <!-- theme: success -->\r\n> **Credits**: 1000 API credits for each parameter in `output_data`. One parameter (`traffic` or `keywords`) costs 1000 credits. Two parameters (`traffic` and `keywords`) cost 2000 credits.\r\n\r\n<!-- theme: info -->\r\n> **Note**: Starting June 15, 2025, this method will consume 1 API credit even when no data is available for the requested query. Previously, no credits were consumed for empty results.\r\n",
+        "operationId": "post-#SerpstatUrlProcedure.getSummaryTraffic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatUrlProcedure.getSummaryTraffic`",
+                    "default": "SerpstatUrlProcedure.getSummaryTraffic",
+                    "example": "SerpstatUrlProcedure.getSummaryTraffic"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "se": {
+                        "$ref": "#/components/schemas/se"
+                      },
+                      "domain": {
+                        "type": "string",
+                        "description": "The domain for which to retrieve traffic and keyword data",
+                        "example": "\"ebay.com\""
+                      },
+                      "urlContains": {
+                        "type": "string",
+                        "description": "Searched part of URL",
+                        "example": "\"/mobile/\""
+                      },
+                      "output_data": {
+                        "type": "string",
+                        "enum": [
+                          "traffic",
+                          "keywords"
+                        ],
+                        "description": "Output data value.  Both options enable by default, choose one to spend less credits.",
+                        "example": "traffic"
+                      }
+                    },
+                    "required": [
+                      "se",
+                      "domain",
+                      "urlContains"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": 1,
+                    "method": "SerpstatUrlProcedure.getSummaryTraffic",
+                    "params": {
+                      "se": "g_us",
+                      "domain": "ebay.com",
+                      "urlContains": "/mobile/",
+                      "output_data1": "traffic",
+                      "output_data2": "keywords"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatUrlProcedure.getSummaryTraffic",
+                    "params": {
+                      "se": "g_us",
+                      "domain": "ebay.com",
+                      "urlContains": "/mobile/",
+                      "output_data": "traffic"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "urls": {
+                          "type": "integer",
+                          "description": "The number of URLs matching the given mask",
+                          "example": 5
+                        },
+                        "traffic": {
+                          "type": "integer",
+                          "description": "Organic traffic found by URL mask\r\n\r\n",
+                          "example": 14
+                        },
+                        "keywords": {
+                          "type": "integer",
+                          "description": "Number of keywords found by URL mask",
+                          "example": 5
+                        },
+                        "summary_info": {
+                          "type": "object",
+                          "properties": {
+                            "left_lines": {
+                              "type": "integer",
+                              "description": "API credits remaining",
+                              "example": 100500
+                            }
+                          },
+                          "required": [
+                            "left_lines"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "urls"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "urls": 5,
+                        "traffic": 14,
+                        "keywords": 5,
+                        "summary_info": {
+                          "left_lines": 893999
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "urls": 5,
+                        "traffic": 9,
+                        "keywords": 5,
+                        "summary_info": {
+                          "left_lines": 969441
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#SerpstatUrlProcedure.getUrlCompetitors": {
+      "post": {
+        "tags": [
+          "Url Analysis"
+        ],
+        "summary": "getUrlCompetitors",
+        "description": "The `SerpstatUrlProcedure.getUrlCompetitors` method returns the list of URL competitors to the queried URL. The data set is similar to the [Competitors report](https://serpstat.com/urls/competitors/?query=&se=g_us&search_type=url) in the URL analysis.\n\n<!-- theme: success -->\n> **Credits**: the number of charged credits corresponds to the number of results obtained upon request (items in `data` section of respone ). \n\n<!-- theme: info -->\n> **Note**: Starting June 15, 2025, this method will consume 1 API credit even when no data is available for the requested query. Previously, no credits were consumed for empty results.\n\n> You can get no more than 60 000 results per a query.\n\nUse case:\n1. Get a list of competitors for a specific domain and analyze their strategies to improve your website's visibility in search engines.\n2. Use method `SerpstatUrlProcedure.getUrlCompetitors` with your website domain.\n3. Receive and save the response with a list of competitors and relevant data.\n4. Analyze the data to improve your SEO strategy.",
+        "operationId": "post-#SerpstatUrlProcedure.getUrlCompetitors",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatUrlProcedure.getUrlCompetitors`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "se": {
+                        "$ref": "#/components/schemas/se"
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "URL for finding competing URLs",
+                        "format": "uri"
+                      },
+                      "sort": {
+                        "type": "object",
+                        "description": "Order of sorting the results ",
+                        "properties": {
+                          "cnt": {
+                            "type": "string",
+                            "enum": [
+                              "asc",
+                              "desc"
+                            ],
+                            "description": "Number of keywords in the top 10 for which pages intersect"
+                          }
+                        }
+                      },
+                      "page": {
+                        "type": "integer",
+                        "description": "Page number in response",
+                        "minimum": 1,
+                        "default": 1
+                      },
+                      "size": {
+                        "type": "integer",
+                        "description": "Number of results per page in response\t",
+                        "minimum": 1,
+                        "maximum": 1000,
+                        "default": 100
+                      }
+                    },
+                    "required": [
+                      "se",
+                      "url"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "SerpstatUrlProcedure.getUrlCompetitors",
+                    "params": {
+                      "se": "g_us",
+                      "url": "https://www.nike.com",
+                      "sort": {
+                        "cnt": "desc"
+                      },
+                      "page": 1,
+                      "size": 5
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatUrlProcedure.getUrlCompetitors",
+                    "params": {
+                      "se": "g_us",
+                      "url": "https://www.nike.com",
+                      "sort": {
+                        "cnt": "desc"
+                      },
+                      "page": 1,
+                      "size": 10
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "domain": {
+                                "type": "string",
+                                "description": "Competitor domain"
+                              },
+                              "url": {
+                                "type": "string",
+                                "description": "Competitor page URL"
+                              },
+                              "cnt": {
+                                "type": "integer",
+                                "description": "Number of keywords in the top 10 for which pages intersect"
+                              }
+                            },
+                            "required": [
+                              "domain",
+                              "url",
+                              "cnt"
+                            ]
+                          }
+                        },
+                        "summary_info": {
+                          "type": "object",
+                          "properties": {
+                            "page": {
+                              "type": "integer",
+                              "description": "Page number"
+                            },
+                            "total": {
+                              "type": "integer",
+                              "description": "Number of keywords in top-100"
+                            },
+                            "left_lines": {
+                              "type": "integer",
+                              "description": "API credits remaining"
+                            }
+                          },
+                          "required": [
+                            "page",
+                            "total",
+                            "left_lines"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "domain": "footlocker.com",
+                            "url": "https://www.footlocker.com/category/brands/nike.html",
+                            "cnt": 89
+                          },
+                          {
+                            "domain": "google.com",
+                            "url": "https://play.google.com/store/apps/details?id=com.nike.omega&hl=en_US",
+                            "cnt": 79
+                          },
+                          {
+                            "domain": "nike.com",
+                            "url": "https://www.nike.com/w/sale-3yaep",
+                            "cnt": 77
+                          },
+                          {
+                            "domain": "nike.com",
+                            "url": "https://www.nike.com/w/shoes-y7ok",
+                            "cnt": 76
+                          },
+                          {
+                            "domain": "nike.com",
+                            "url": "https://www.nike.com/men",
+                            "cnt": 56
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "total": 468,
+                          "left_lines": 971461
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "domain": "footlocker.com",
+                            "url": "https://www.footlocker.com/category/brands/nike.html",
+                            "cnt": 89
+                          },
+                          {
+                            "domain": "google.com",
+                            "url": "https://play.google.com/store/apps/details?id=com.nike.omega&hl=en_US",
+                            "cnt": 79
+                          },
+                          {
+                            "domain": "nike.com",
+                            "url": "https://www.nike.com/w/sale-3yaep",
+                            "cnt": 77
+                          },
+                          {
+                            "domain": "nike.com",
+                            "url": "https://www.nike.com/w/shoes-y7ok",
+                            "cnt": 76
+                          },
+                          {
+                            "domain": "nike.com",
+                            "url": "https://www.nike.com/men",
+                            "cnt": 56
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "total": 468,
+                          "left_lines": 971461
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#SerpstatUrlProcedure.getUrlKeywords": {
+      "post": {
+        "tags": [
+          "Url Analysis"
+        ],
+        "summary": "getUrlKeywords",
+        "description": "The `SerpstatUrlProcedure.getUrlKeywords` method returns a list of keywords for which the specified URL ranks in the top-100 Google and top-50 Bing search results. It provides insights into the organic search performance of a page and is ideal for keyword research, content optimization, and competitor analysis. The data set is similar to the URL analysis — SEO research — [Keywords report](https://serpstat.com/urls/search/?query=&se=g_us&search_type=url&filter:0:0:block_condition=and&filter:0:0:field=right_spelling&filter:0:0:condition=not_contain&filter:0:0:value=).\n\n<!-- theme: success -->\n> **Credits**: the number of charged credits corresponds to the number of results obtained upon request (items in `data` section of respone ).\n\n<!-- theme: info -->\n> **Note**: Starting June 15, 2025, this method will consume 1 API credit even when no data is available for the requested query. Previously, no credits were consumed for empty results.\n\n\n> You can get no more than 60 000 results per a query. For more data - use the export option in the UI of Domain Analysis, Keyword Analysis, or URL Analysis sections, or contact the manager for a personal upload of the results. \n\n\nUse Case:\n1. *Analyze a Competitor* - Identify a relevant competitor's page.\n2. *Extract Keywords* - Use `SerpstatUrlProcedure.getUrlKeywords` to extract keywords.\n3. *Filter for Quality* - Apply filters to select the best keywords.\n4. *Expand Your List* - Incorporate these keywords into your existing list.",
+        "operationId": "post-#SerpstatUrlProcedure.getUrlKeywords",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatUrlProcedure.getUrlKeywords`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "se": {
+                        "$ref": "#/components/schemas/se"
+                      },
+                      "url": {
+                        "type": "string",
+                        "description": "Analyzed page URL",
+                        "format": "uri",
+                        "example": "https://www.nike.com"
+                      },
+                      "withIntents": {
+                        "type": "boolean",
+                        "description": "Keyword intent\n\n*This parameter works for `g_ua` and `g_us` database only*"
+                      },
+                      "sort": {
+                        "type": "object",
+                        "description": "Order of sorting the results ",
+                        "properties": {
+                          "position": {
+                            "type": "string",
+                            "enum": [
+                              "asc",
+                              "desc"
+                            ],
+                            "description": "Sort the results by position"
+                          },
+                          "difficulty": {
+                            "type": "string",
+                            "enum": [
+                              "asc",
+                              "desc"
+                            ],
+                            "description": "Sort the results by the level of keywords competition level to advance in organic search in the top-10"
+                          },
+                          "cost": {
+                            "type": "string",
+                            "enum": [
+                              "asc",
+                              "desc"
+                            ],
+                            "description": "Sort the results by cost per click (in USD)"
+                          }
+                        }
+                      },
+                      "filters": {
+                        "type": "object",
+                        "description": "Filters for search. Fields are combined using the \"AND\" logic. Numeric range fields (`_from` and `_to`) allow specifying minimum and maximum values. List fields (`_contain` and `_not_contain`) specify inclusion or exclusion criteria",
+                        "properties": {
+                          "cost": {
+                            "type": "number",
+                            "description": "Cost per click (in US $; exact match)"
+                          },
+                          "cost_from": {
+                            "type": "number",
+                            "description": "Cost per click (in US $; exact match) from"
+                          },
+                          "cost_to": {
+                            "type": "number",
+                            "description": "Cost per click (in US $; exact match) to"
+                          },
+                          "position": {
+                            "type": "integer",
+                            "description": "URL's position in Google's top-100 results for this keyword",
+                            "minimum": 1,
+                            "maximum": 100
+                          },
+                          "position_from": {
+                            "type": "integer",
+                            "description": "Keyword position from",
+                            "minimum": 1,
+                            "maximum": 100
+                          },
+                          "position_to": {
+                            "type": "integer",
+                            "description": "Keyword position to",
+                            "minimum": 1,
+                            "maximum": 100
+                          },
+                          "concurrency": {
+                            "type": "integer",
+                            "description": "PPC Competition. Max 100. Shows difficulty for this keyword.",
+                            "minimum": 1,
+                            "maximum": 100
+                          },
+                          "concurrency_from": {
+                            "type": "integer",
+                            "description": "PPC Competition from",
+                            "minimum": 1,
+                            "maximum": 100
+                          },
+                          "concurrency_to": {
+                            "type": "integer",
+                            "description": "PPC Competition to",
+                            "minimum": 1,
+                            "maximum": 100
+                          },
+                          "keyword_length": {
+                            "type": "integer",
+                            "description": "Number of words in the keyword"
+                          },
+                          "difficulty": {
+                            "type": "number",
+                            "description": "Keyword difficulty score from 0 to 100",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "difficulty_from": {
+                            "type": "number",
+                            "description": "Keyword difficulty from",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "difficulty_to": {
+                            "type": "number",
+                            "description": "Keyword difficulty to",
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "traff": {
+                            "type": "integer",
+                            "description": "Approximate traffic by keyword"
+                          },
+                          "region_queries_count": {
+                            "type": "integer",
+                            "description": "Volume of the keyword by the selected region"
+                          },
+                          "region_queries_count_from": {
+                            "type": "integer",
+                            "description": "Volume of the keyword by the selected region from"
+                          },
+                          "region_queries_count_to": {
+                            "type": "integer",
+                            "description": "Volume of the keyword by the selected region to"
+                          },
+                          "region_queries_count_wide": {
+                            "type": "integer",
+                            "description": "Volume of the keyword in broad match"
+                          },
+                          "region_queries_count_wide_from": {
+                            "type": "integer",
+                            "description": "Volume of the keyword in broad match from"
+                          },
+                          "region_queries_count_wide_to": {
+                            "type": "integer",
+                            "description": "Volume of the keyword in broad match to"
+                          },
+                          "url_contains": {
+                            "type": "string",
+                            "description": "The exact website pages ranking for the keywords"
+                          },
+                          "right_spelling": {
+                            "type": "boolean",
+                            "description": "Display or not to display misspelled keywords"
+                          },
+                          "keyword_contain": {
+                            "type": "string",
+                            "description": "Contains all keywords (exact matching)"
+                          },
+                          "keyword_not_contain": {
+                            "type": "string",
+                            "description": "Does not contain all keywords (exact matching)"
+                          },
+                          "keyword_contain_one_of": {
+                            "type": "string",
+                            "description": "Contains one of the keywords (exact matching)"
+                          },
+                          "keyword_not_contain_one_of": {
+                            "type": "string",
+                            "description": "Does not contain one of the keywords (exact matching)"
+                          },
+                          "intents_contain": {
+                            "type": "array",
+                            "description": "Contains one or several of intents",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "informational",
+                                "navigational",
+                                "commercial",
+                                "transactional"
+                              ]
+                            }
+                          },
+                          "intents_not_contain": {
+                            "type": "array",
+                            "description": "Does not contain one of the intents",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "informational",
+                                "navigational",
+                                "commercial",
+                                "transactional"
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "page": {
+                        "type": "integer",
+                        "description": "Page number in response",
+                        "minimum": 1,
+                        "default": 1
+                      },
+                      "size": {
+                        "type": "integer",
+                        "description": "Number of results per page in response",
+                        "minimum": 1,
+                        "maximum": 1000,
+                        "default": 100
+                      }
+                    },
+                    "required": [
+                      "se",
+                      "url"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "SerpstatUrlProcedure.getUrlKeywords",
+                    "params": {
+                      "se": "g_us",
+                      "url": "https://www.nike.com/men",
+                      "withIntents": true,
+                      "sort": {
+                        "position": "asc"
+                      },
+                      "filters": {
+                        "cost_from": 1,
+                        "cost_to": 1000,
+                        "intents_contain": [
+                          "commercial"
+                        ],
+                        "intents_not_contain": [
+                          "navigational"
+                        ]
+                      },
+                      "page": 1,
+                      "size": 2
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatUrlProcedure.getUrlKeywords",
+                    "params": {
+                      "se": "g_us",
+                      "url": "https://www.nike.com/men",
+                      "withIntents": true,
+                      "sort": {
+                        "position": "asc"
+                      },
+                      "filters": {
+                        "cost_from": 1,
+                        "cost_to": 1000,
+                        "intents_contain": [
+                          "commercial"
+                        ],
+                        "intents_not_contain": [
+                          "navigational"
+                        ]
+                      },
+                      "page": 1,
+                      "size": 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "domain": {
+                                "type": "string",
+                                "description": "Domain by which the information was received"
+                              },
+                              "subdomain": {
+                                "type": "string",
+                                "description": "Subdomain which ranks for the keyword"
+                              },
+                              "keyword": {
+                                "type": "string",
+                                "description": "Keyword which the URL ranks for"
+                              },
+                              "keyword_length": {
+                                "type": "integer",
+                                "description": "Number of words divided by space in a keyword"
+                              },
+                              "url": {
+                                "type": "string",
+                                "description": "URL appeared in the search result for the query"
+                              },
+                              "position": {
+                                "type": "integer",
+                                "description": "URL's position for a keyword"
+                              },
+                              "types": {
+                                "type": "array",
+                                "description": "List of special elements shown in SERP (for example, `video`, `carousel` or `map`)",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "found_results": {
+                                "type": "integer",
+                                "description": "Number of results found for keyword"
+                              },
+                              "cost": {
+                                "type": "number",
+                                "description": "Cost per click, $ (the indicator is updated every month)"
+                              },
+                              "concurrency": {
+                                "type": "integer",
+                                "description": "Keyword competition in the PPC (0-100)"
+                              },
+                              "region_queries_count": {
+                                "type": "integer",
+                                "description": "Search volume in selected region"
+                              },
+                              "region_queries_count_wide": {
+                                "nullable": true,
+                                "description": "Search volume (broad match)"
+                              },
+                              "geo_names": {
+                                "type": "array",
+                                "description": "List of toponyms in the array (if toponyms are present in the keywords)",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "traff": {
+                                "type": "integer",
+                                "description": "Approximate traffic by keyword depending on its volume and position"
+                              },
+                              "difficulty": {
+                                "type": "integer",
+                                "description": "The assessment of the level of competition for a keyword to advance in organic search in the top-10 (from 0 to 100%)"
+                              },
+                              "dynamic": {
+                                "type": "integer",
+                                "description": "How the position of this keyword has changed (New position — null, Position did not change — 0, Position dropped — negative value (e.g. -20), Position increased — positive value (e.g. 20))"
+                              },
+                              "intents": {
+                                "type": "array",
+                                "description": "Intents of the analyzed keyword",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "first_position": {
+                                "type": "string",
+                                "description": "The domain position of which is better than the one you are looking for was found by the keyword."
+                              },
+                              "first_url": {
+                                "type": "string",
+                                "description": "The url position of which is better than the one you are looking for was found by the keyword."
+                              }
+                            },
+                            "required": [
+                              "domain",
+                              "subdomain",
+                              "keyword",
+                              "keyword_length",
+                              "url",
+                              "position",
+                              "types",
+                              "found_results",
+                              "cost",
+                              "concurrency",
+                              "region_queries_count",
+                              "region_queries_count_wide",
+                              "geo_names",
+                              "traff",
+                              "difficulty",
+                              "dynamic",
+                              "intents"
+                            ]
+                          }
+                        },
+                        "summary_info": {
+                          "type": "object",
+                          "properties": {
+                            "page": {
+                              "type": "integer",
+                              "description": "Page number"
+                            },
+                            "total": {
+                              "type": "integer",
+                              "description": "Number of found keywords ranking the given domain in top"
+                            },
+                            "left_lines": {
+                              "type": "integer",
+                              "description": "API credits remaining"
+                            }
+                          },
+                          "required": [
+                            "page",
+                            "total",
+                            "left_lines"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "domain": "nike.com",
+                            "subdomain": "www.nike.com",
+                            "keyword": "nike men usa",
+                            "keyword_length": 3,
+                            "url": "https://www.nike.com/men",
+                            "position": 1,
+                            "types": [
+                              "related_search",
+                              "pic",
+                              "ads_top",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "found_results": 102000000,
+                            "cost": 2.32,
+                            "concurrency": 100,
+                            "region_queries_count": 90,
+                            "region_queries_count_wide": null,
+                            "geo_names": [
+                              "usa"
+                            ],
+                            "traff": 13,
+                            "difficulty": 75,
+                            "dynamic": 0,
+                            "intents": [
+                              "commercial"
+                            ]
+                          },
+                          {
+                            "domain": "nike.com",
+                            "subdomain": "www.nike.com",
+                            "keyword": "purchase nike shoes online",
+                            "keyword_length": 4,
+                            "url": "https://www.nike.com/men",
+                            "position": 1,
+                            "types": [
+                              "pic",
+                              "related_search",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "found_results": 34000000,
+                            "cost": 1.36,
+                            "concurrency": 51,
+                            "region_queries_count": 1600,
+                            "region_queries_count_wide": null,
+                            "geo_names": [],
+                            "traff": 239,
+                            "difficulty": 34,
+                            "dynamic": 0,
+                            "intents": [
+                              "commercial"
+                            ]
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "total": 50,
+                          "left_lines": 971441
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "domain": "nike.com",
+                            "subdomain": "www.nike.com",
+                            "keyword": "nike men usa",
+                            "keyword_length": 3,
+                            "url": "https://www.nike.com/men",
+                            "position": 1,
+                            "types": [
+                              "related_search",
+                              "pic",
+                              "ads_top",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "found_results": 102000000,
+                            "cost": 2.32,
+                            "concurrency": 100,
+                            "region_queries_count": 90,
+                            "region_queries_count_wide": null,
+                            "geo_names": [
+                              "usa"
+                            ],
+                            "traff": 13,
+                            "difficulty": 75,
+                            "dynamic": 0,
+                            "intents": [
+                              "commercial"
+                            ]
+                          },
+                          {
+                            "domain": "nike.com",
+                            "subdomain": "www.nike.com",
+                            "keyword": "purchase nike shoes online",
+                            "keyword_length": 4,
+                            "url": "https://www.nike.com/men",
+                            "position": 1,
+                            "types": [
+                              "pic",
+                              "related_search",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "found_results": 34000000,
+                            "cost": 1.36,
+                            "concurrency": 51,
+                            "region_queries_count": 1600,
+                            "region_queries_count_wide": null,
+                            "geo_names": [],
+                            "traff": 239,
+                            "difficulty": 34,
+                            "dynamic": 0,
+                            "intents": [
+                              "commercial"
+                            ]
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "total": 50,
+                          "left_lines": 971441
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#SerpstatUrlProcedure.getUrlMissingKeywords": {
+      "post": {
+        "tags": [
+          "Url Analysis"
+        ],
+        "summary": "getUrlMissingKeywords",
+        "description": "The `SerpstatUrlProcedure.getUrlMissingKeywords` method returns keywords that competitors are ranking for but the given URL isn’t ranking for them. The data set is similar to [Missing keywords report](https://serpstat.com/urls/missing-keywords/?query=&se=g_us&search_type=url&filter:0:0:block_condition=and&filter:0:0:field=right_spelling&filter:0:0:condition=not_contain&filter:0:0:value=) in the URL analysis.\n\n<!-- theme: success -->\n> **Credits**: the number of charged credits corresponds to the number of results obtained upon request (items in `data` section of respone ).\n\n<!-- theme: info -->\n> **Note**: Starting June 15, 2025, this method will consume 1 API credit even when no data is available for the requested query. Previously, no credits were consumed for empty results.\n\n> You can get no more than 60 000 results per a query. For more data - use the export option in theUI of Domain Analysis, Keyword Analysis, or URL Analysis sections, or contact the manager for a personal upload of the results. \n\n\nUse case: \n1. Use `SerpstatUrlProcedure.getUrlMissingKeywords`, set the URL of the page to analyze its missing keywords.\n2. Get a response with a list of missing keywords.\n3. Analyze these keywords and implement them in your content and SEO strategy.",
+        "operationId": "post-#SerpstatUrlProcedure.getUrlMissingKeywords",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `SerpstatUrlProcedure.getUrlMissingKeywords`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Analyzed URL",
+                        "format": "uri",
+                        "example": "https://www.nike.com"
+                      },
+                      "se": {
+                        "$ref": "#/components/schemas/se"
+                      },
+                      "sort": {
+                        "type": "object",
+                        "description": "Order of sorting the results ",
+                        "properties": {
+                          "weight": {
+                            "type": "string",
+                            "enum": [
+                              "asc",
+                              "desc"
+                            ],
+                            "description": "Sort results by the number of URLs in the top 20 results"
+                          }
+                        }
+                      },
+                      "filters": {
+                        "type": "object",
+                        "description": "Filters for search. Fields are combined using the \"AND\" logic. Numeric range fields (`_from` and `_to`) allow specifying minimum and maximum values. List fields (`_contain` and `_not_contain`) specify inclusion or exclusion criteria",
+                        "properties": {
+                          "region_queries_count": {
+                            "type": "integer",
+                            "description": "Keyword volume by the selected region (any number value)"
+                          },
+                          "region_queries_count_to": {
+                            "type": "integer",
+                            "description": "Volume to (any number value)"
+                          },
+                          "region_queries_count_from": {
+                            "type": "integer",
+                            "description": "Volume from (any number value)"
+                          },
+                          "region_queries_count_wide": {
+                            "type": "integer",
+                            "description": "Keyword volume in broad match (any numeric value)"
+                          },
+                          "region_queries_count_wide_to": {
+                            "type": "integer",
+                            "description": "Volume to (any numeric value)"
+                          },
+                          "region_queries_count_wide_from": {
+                            "type": "integer",
+                            "description": "Volume from (any numeric value)"
+                          },
+                          "cost": {
+                            "type": "number",
+                            "description": "Price per click (in US $)"
+                          },
+                          "cost_to": {
+                            "type": "number",
+                            "description": "Price per click to"
+                          },
+                          "cost_from": {
+                            "type": "number",
+                            "description": "Price per click from"
+                          },
+                          "keyword": {
+                            "type": "string",
+                            "description": "Any text value"
+                          },
+                          "minus_keywords": {
+                            "type": "array",
+                            "description": "Excluding keywords",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "concurrency": {
+                            "type": "number",
+                            "description": "Concurrency (any number value)"
+                          },
+                          "concurrency_to": {
+                            "type": "number",
+                            "description": "Competition to (any number value)"
+                          },
+                          "concurrency_from": {
+                            "type": "number",
+                            "description": "Competition from (any number value)"
+                          },
+                          "weight": {
+                            "type": "integer",
+                            "description": "Connection strength (any number value)"
+                          },
+                          "weight_to": {
+                            "type": "integer",
+                            "description": "Connection strength to (any number value)"
+                          },
+                          "weight_from": {
+                            "type": "integer",
+                            "description": "Connection strength from (any number value)"
+                          },
+                          "right_spelling": {
+                            "type": "boolean",
+                            "description": "Filter by spelling: true - contains all, false - does not contain all"
+                          }
+                        }
+                      },
+                      "page": {
+                        "type": "integer",
+                        "description": "Page number in response",
+                        "minimum": 1,
+                        "default": 1
+                      },
+                      "size": {
+                        "type": "integer",
+                        "description": "Number of results per page in response",
+                        "minimum": 1,
+                        "maximum": 1000,
+                        "default": 100
+                      }
+                    },
+                    "required": [
+                      "url",
+                      "se"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "SerpstatUrlProcedure.getUrlMissingKeywords",
+                    "params": {
+                      "url": "https://www.nike.com",
+                      "se": "g_us",
+                      "sort": {
+                        "weight": "asc"
+                      },
+                      "filters": {
+                        "cost_from": 0.3
+                      },
+                      "page": 1,
+                      "size": 3
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "123",
+                    "method": "SerpstatUrlProcedure.getUrlMissingKeywords",
+                    "params": {
+                      "url": "https://www.nike.com",
+                      "se": "g_us",
+                      "sort": {
+                        "weight": "asc"
+                      },
+                      "filters": {
+                        "cost_from": 0.3
+                      },
+                      "page": 1,
+                      "size": 3
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "geo_names": {
+                                "type": "array",
+                                "description": "List of toponyms in the array (if toponyms are present in the keywords)",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "region_queries_count": {
+                                "type": "integer",
+                                "description": "Search volume in selected region"
+                              },
+                              "types": {
+                                "type": "array",
+                                "description": "\t\nList of special elements shown in SERP (for example, `video`, `carousel` or `map`)",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "cost": {
+                                "type": "integer",
+                                "description": "Cost per click, $"
+                              },
+                              "region_queries_count_wide": {
+                                "type": "integer",
+                                "description": "Search volume (broad match)"
+                              },
+                              "keyword": {
+                                "type": "string",
+                                "description": "Keyword that competitors are ranking for in top-10 search results, while the analyzed page is not ranking for these search queries even in Google`s top-100 results."
+                              },
+                              "concurrency": {
+                                "type": "integer",
+                                "description": "Keyword competition in PPC (0-100%)"
+                              },
+                              "weight": {
+                                "type": "integer",
+                                "description": "Connection strength shows the number of competitors who are ranking for the given keyword"
+                              }
+                            },
+                            "required": [
+                              "geo_names",
+                              "region_queries_count",
+                              "types",
+                              "cost",
+                              "region_queries_count_wide",
+                              "keyword",
+                              "concurrency",
+                              "weight"
+                            ]
+                          }
+                        },
+                        "summary_info": {
+                          "type": "object",
+                          "properties": {
+                            "page": {
+                              "type": "integer",
+                              "description": "Page number"
+                            },
+                            "left_lines": {
+                              "type": "integer",
+                              "description": "API credits remaining"
+                            }
+                          },
+                          "required": [
+                            "page",
+                            "left_lines"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "geo_names": [],
+                            "region_queries_count": 368000,
+                            "types": [
+                              "related_search",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "cost": 0.44000000000000006,
+                            "region_queries_count_wide": 0,
+                            "keyword": "sneakers",
+                            "concurrency": 100,
+                            "weight": 2
+                          },
+                          {
+                            "geo_names": [],
+                            "region_queries_count": 40500,
+                            "types": [
+                              "related_search",
+                              "kn_graph_card",
+                              "also_asks",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "cost": 6,
+                            "region_queries_count_wide": 0,
+                            "keyword": "swoosh",
+                            "concurrency": 18,
+                            "weight": 2
+                          },
+                          {
+                            "geo_names": [],
+                            "region_queries_count": 27100,
+                            "types": [
+                              "also_asks",
+                              "pic",
+                              "related_search",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "cost": 0.55,
+                            "region_queries_count_wide": 0,
+                            "keyword": "jordan sneakers",
+                            "concurrency": 100,
+                            "weight": 2
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "left_lines": 966429
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "geo_names": [],
+                            "region_queries_count": 368000,
+                            "types": [
+                              "related_search",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "cost": 0.44000000000000006,
+                            "region_queries_count_wide": 0,
+                            "keyword": "sneakers",
+                            "concurrency": 100,
+                            "weight": 2
+                          },
+                          {
+                            "geo_names": [],
+                            "region_queries_count": 40500,
+                            "types": [
+                              "related_search",
+                              "kn_graph_card",
+                              "also_asks",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "cost": 6,
+                            "region_queries_count_wide": 0,
+                            "keyword": "swoosh",
+                            "concurrency": 18,
+                            "weight": 2
+                          },
+                          {
+                            "geo_names": [],
+                            "region_queries_count": 27100,
+                            "types": [
+                              "also_asks",
+                              "pic",
+                              "related_search",
+                              "snip_breadcrumbs",
+                              "snip_image_thumbnail"
+                            ],
+                            "cost": 0.55,
+                            "region_queries_count_wide": 0,
+                            "keyword": "jordan sneakers",
+                            "concurrency": 100,
+                            "weight": 2
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "left_lines": 966429
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Url Analysis",
+      "description": "Url Analysis"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "id": {
+        "type": "string",
+        "title": "id",
+        "description": "Request / response identifier, prodvided from your side, will be mirrored from request to `id` in response. Example \"id\":\"123\"",
+        "x-examples": {
+          "Example 1": {
+            "id": "123"
+          }
+        }
+      },
+      "se": {
+        "type": "string",
+        "enum": [
+          "g_af",
+          "g_al",
+          "g_dz",
+          "g_as",
+          "g_ad",
+          "g_ao",
+          "g_ai",
+          "g_ag",
+          "g_ar",
+          "g_am",
+          "g_aw",
+          "g_au",
+          "g_at",
+          "g_az",
+          "g_bh",
+          "g_bd",
+          "g_bb",
+          "g_by",
+          "g_be",
+          "g_bz",
+          "g_bj",
+          "g_bm",
+          "g_bt",
+          "g_bo",
+          "g_ba",
+          "g_bw",
+          "g_br",
+          "g_io",
+          "g_vg",
+          "g_bn",
+          "g_bg",
+          "g_bf",
+          "g_bi",
+          "g_kh",
+          "g_cm",
+          "g_ca",
+          "g_cv",
+          "g_ky",
+          "g_cf",
+          "g_td",
+          "g_cl",
+          "g_cn",
+          "g_cx",
+          "g_сс",
+          "g_co",
+          "g_km",
+          "g_ck",
+          "g_cr",
+          "g_ci",
+          "g_hr",
+          "g_cw",
+          "g_cy",
+          "g_cz",
+          "g_cd",
+          "g_dk",
+          "g_dj",
+          "g_dm",
+          "g_do",
+          "g_ec",
+          "g_eg",
+          "g_sv",
+          "g_gq",
+          "g_er",
+          "g_ee",
+          "g_et",
+          "g_fk",
+          "g_fo",
+          "g_fm",
+          "g_fj",
+          "g_fi",
+          "g_fr",
+          "g_gf",
+          "g_pf",
+          "g_ga",
+          "g_ge",
+          "g_de",
+          "g_gh",
+          "g_gi",
+          "g_gr",
+          "g_gl",
+          "g_gd",
+          "g_gp",
+          "g_gu",
+          "g_gt",
+          "g_gg",
+          "g_gn",
+          "g_gw",
+          "g_gy",
+          "g_ht",
+          "g_hn",
+          "g_hk",
+          "g_hu",
+          "g_is",
+          "g_in",
+          "g_id",
+          "g_iq",
+          "g_ie",
+          "g_im",
+          "g_il",
+          "g_it",
+          "g_jm",
+          "g_jp",
+          "g_je",
+          "g_jo",
+          "g_kz",
+          "g_ke",
+          "g_ki",
+          "g_kw",
+          "g_kg",
+          "g_la",
+          "g_lv",
+          "g_lb",
+          "g_ls",
+          "g_lr",
+          "g_ly",
+          "g_li",
+          "g_lt",
+          "g_lu",
+          "g_mo",
+          "g_mk",
+          "g_mg",
+          "g_mw",
+          "g_my",
+          "g_mv",
+          "g_ml",
+          "g_mt",
+          "g_mh",
+          "g_mq",
+          "g_mr",
+          "g_mu",
+          "g_yt",
+          "g_mx",
+          "g_md",
+          "g_mc",
+          "g_mn",
+          "g_me",
+          "g_ms",
+          "g_ma",
+          "g_mz",
+          "g_mm",
+          "g_na",
+          "g_nr",
+          "g_np",
+          "g_nl",
+          "g_nc",
+          "g_nz",
+          "g_ni",
+          "g_ne",
+          "g_ng",
+          "g_nu",
+          "g_nf",
+          "g_mp",
+          "g_no",
+          "g_om",
+          "g_pk",
+          "g_pw",
+          "g_ps",
+          "g_pa",
+          "g_pg",
+          "g_py",
+          "g_pe",
+          "g_ph",
+          "g_pn",
+          "g_pl",
+          "g_pt",
+          "g_pr",
+          "g_qa",
+          "g_cg",
+          "g_re",
+          "g_ro",
+          "g_ru",
+          "g_rw",
+          "g_sh",
+          "g_kn",
+          "g_lc",
+          "g_pm",
+          "g_vc",
+          "g_ws",
+          "g_sm",
+          "g_st",
+          "g_sa",
+          "g_sn",
+          "g_rs",
+          "g_sc",
+          "g_sl",
+          "g_sg",
+          "g_sx",
+          "g_sk",
+          "g_si",
+          "g_sb",
+          "g_so",
+          "g_za",
+          "g_kr",
+          "g_es",
+          "g_lk",
+          "g_sr",
+          "g_sz",
+          "g_se",
+          "g_ch",
+          "g_tw",
+          "g_tj",
+          "g_tz",
+          "g_th",
+          "g_bs",
+          "g_gm",
+          "g_tl",
+          "g_tg",
+          "g_tk",
+          "g_to",
+          "g_tt",
+          "g_tn",
+          "g_tr",
+          "g_tm",
+          "g_tc",
+          "g_tv",
+          "g_vi",
+          "g_ug",
+          "g_ua",
+          "g_ae",
+          "g_uk",
+          "g_us",
+          "g_uy",
+          "g_uz",
+          "g_vu",
+          "g_va",
+          "g_ve",
+          "g_vn",
+          "g_wf",
+          "g_ye",
+          "g_zm",
+          "g_zw",
+          "bing_us"
+        ],
+        "title": "search engines short names",
+        "description": "Example `\"se\":\"g_us\"`. \nReffer to full list of [search engines](../serpstat-public-api/ba97ni814ao9p-search-engine-short-names)\n"
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ]
+}

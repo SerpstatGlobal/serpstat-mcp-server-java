@@ -1,0 +1,62 @@
+{
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string",
+      "description": "Domain to analyze",
+      "pattern": "^([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]\\.)+[a-zA-Z]{2,}$",
+      "enum": [
+        "g_us", "g_uk", "g_au", "g_ca", "g_de",
+        "g_fr", "g_ru", "g_br", "g_mx", "g_es",
+        "g_it", "g_nl", "g_pl", "g_ua"
+      ]
+    },
+    "se": {
+      "type": "string",
+      "description": "Search engine database ID",
+      "default": "g_us",
+      "enum": [
+        "g_us", "g_uk", "g_au", "g_ca", "g_de",
+        "g_fr", "g_ru", "g_br", "g_mx", "g_es",
+        "g_it", "g_nl", "g_pl", "g_ua"
+      ]
+    },
+    "size": {
+      "type": "integer",
+      "description": "Number of results to return",
+      "minimum": 1,
+      "maximum": 100,
+      "default": 10
+    },
+    "filters": {
+      "type": "object",
+      "description": "Optional filter conditions",
+      "properties": {
+        "visible": {
+          "type": "number",
+          "description": "Minimum site visibility",
+          "minimum": 0
+        },
+        "traff": {
+          "type": "integer",
+          "description": "Minimum estimated traffic",
+          "minimum": 0
+        },
+        "minus_domains": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^([a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]\\.)+[a-zA-Z]{2,}$"
+          },
+          "description": "Array of domains to exclude from the analysis.",
+          "minItems": 1,
+          "maxItems": 50,
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["domain", "se", "size"],
+  "additionalProperties": false
+}

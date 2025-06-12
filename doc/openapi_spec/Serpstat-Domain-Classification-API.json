@@ -1,0 +1,643 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "4.0",
+    "title": "Domain Classification API",
+    "description": "### Current version: 4\n\nhttps://api.serpstat.com/v4 — Endpoint URL, through which all requests should be processed.\n\n### API protocol\n\n- Our API protocol is [**JSON-RPC 2.0**](https://www.jsonrpc.org/specification).\n\n### Requests\n\n- All requests should be sent via **POST** method.\n- All request parameters must be set via POST request body in **JSON** format.\n- Each request should contain a `method` name parameter corresponding to the API method (case-sensitive).\n\n### Authentication\n\n- Tokens are used for authentication. Create a token on [your profile page](https://serpstat.com/users/profile/). \n- `token` is required for all API requests.\n- Api token is available for almost paid and trial plans that have API feature enabled.\n\n### Pagination\n\nFor pagination, use the parameters:\n- `size`: number of results per page (default 100, maximum 1000);\n- `page`: page number (default is 1st page).\n\nPlease note: not all methods are supporting pagination.\n\n\n### Filters\n\nFilters can be applied to each method, most of them are specific for the method you used.\n`filters` object are optional for most methods.\n\n### Responses\n\n- All responses are in **JSON** format.\n- All responses have 200 HTTP status, even erroneous ones. In case of error, the response contains an `error` object instead of `result`.\n\n\n### API credits (limits)\n\nWhen calculating the used credits, your pricing plan's API requests are taken into account, including identical requests and requests for export.\n\n### Request rates\n\nMost subscription plans are limited to 1 request per second.\nTop-tier plans allow up to 10 requests per second.\nFor higher rate limits, contact our sales team.\nExceeding your rate limit will result in an error response.\n\n### Max results\n\nThe maximum number of results returned by each API method is limited up to 60,000 rows.\n",
+    "termsOfService": "https://serpstat.com/users/license-agreement/",
+    "contact": {
+      "url": "https://serpstat.com",
+      "email": "support@serpstat.com",
+      "name": "Support"
+    },
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0/",
+      "name": "CC BY 4.0"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.serpstat.com/v4",
+      "description": "Default server"
+    }
+  ],
+  "paths": {
+    "/#DomainClassification.addTask": {
+      "post": {
+        "tags": [
+          "Domain Classification"
+        ],
+        "summary": "addTask",
+        "description": "`DomainClassification.addTask` method  allows sending a list of domains to categorize it.\nYou can send up to 1K of domains per request.\n\n<!-- theme: success -->\n> **Credits**: This request charges 0.03$ from SERP Crawling wallet for each domain in request.",
+        "operationId": "post-#DomainClassification.addTask",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `DomainClassification.addTask`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "domains": {
+                        "type": "array",
+                        "description": "An array of domain names",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "domains"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "DomainClassification.addTask",
+                    "params": {
+                      "domains": [
+                        "serpstat.com",
+                        "facebook.com"
+                      ]
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "method": "DomainClassification.addTask",
+                    "id": "130",
+                    "params": {
+                      "domains": [
+                        "serpstat.com",
+                        "facebook.com"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "type": "string",
+                          "description": "Task identifier"
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/taskStatus"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "description": "Task creating date in format `YYYY-MM-DD HH:MM:SS`"
+                        }
+                      },
+                      "required": [
+                        "task_id",
+                        "status",
+                        "created_at"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "task_id": "833062-0e5a4bec-824d-4e90-9138-0bc5a2303155",
+                        "status": 1,
+                        "created_at": "2025-01-21 16:40:12"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "131",
+                      "result": {
+                        "task_id": "833062-0e5a4bec-824d-4e90-9138-0bc5a2303155",
+                        "status": 1,
+                        "created_at": "2025-01-21 16:40:12"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#DomainClassification.getTask": {
+      "post": {
+        "tags": [
+          "Domain Classification"
+        ],
+        "summary": "getTask",
+        "description": "The `DomainClassification.getTask`method allows obtaining a result of a task.\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API Credits.",
+        "operationId": "post-#DomainClassification.getTask",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `DomainClassification.getTask`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "task_id": {
+                        "type": "string",
+                        "description": "Task identifier"
+                      }
+                    },
+                    "required": [
+                      "task_id"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "DomainClassification.getTask",
+                    "params": {
+                      "task_id": "833062-3dedd490-4092-4504-b24e-6bb9039e2aab"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "133",
+                    "method": "DomainClassification.getTask",
+                    "params": {
+                      "task_id": "833062-3dedd490-4092-4504-b24e-6bb9039e2aab"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "task_id": {
+                          "type": "string",
+                          "description": "Task identifier"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "domain": {
+                                "type": "string",
+                                "description": "Domain name to analyze"
+                              },
+                              "categories_names": {
+                                "type": "array",
+                                "description": "The name of the category assigned to the domain.\n\n- \"Unknown\": The domain's category could not be determined.\n- \"Unreachable\": The domain has been submitted for categorization, and the information is temporarily stored in the cache.",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "categories_confidence": {
+                                "type": "array",
+                                "description": "A numeric value representing the system's confidence level in the correct classification of a domain into a specific category. Higher values indicate greater confidence in the domain's categorization. For **unknown** domains, categories_confidence will always equal `1.0`.",
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "required": [
+                              "domain",
+                              "categories_names",
+                              "categories_confidence"
+                            ]
+                          }
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/taskStatus"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "description": "Task creating date in format `YYYY-MM-DD HH:MM:SS`"
+                        }
+                      },
+                      "required": [
+                        "task_id",
+                        "status",
+                        "created_at"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "132",
+                      "result": {
+                        "task_id": "833062-0e5a4bec-824d-4e90-9138-0bc5a2303155",
+                        "data": [
+                          {
+                            "domain": "facebook.com",
+                            "categories_names": [
+                              "/Online Communities/Social Networks"
+                            ],
+                            "categories_confidence": [
+                              0.91368252038956
+                            ]
+                          },
+                          {
+                            "domain": "serpstat.com",
+                            "categories_names": [
+                              "/Internet & Telecom/Web Services/Search Engine Optimization & Marketing",
+                              "/Internet & Telecom/Web Services/Web Stats & Analytics",
+                              "/Business & Industrial/Advertising & Marketing/Marketing",
+                              "/Computers & Electronics/Software/Business & Productivity Software",
+                              "/Internet & Telecom/Other"
+                            ],
+                            "categories_confidence": [
+                              0.95571535825729,
+                              0.94931191205978,
+                              0.35643520951271,
+                              0.1866105645895,
+                              0.13548009097576
+                            ]
+                          }
+                        ],
+                        "status": "2",
+                        "created_at": "2025-01-21 16:40:12"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "123",
+                      "result": {
+                        "task_id": "833062-0e5a4bec-824d-4e90-9138-0bc5a2303155",
+                        "data": [
+                          {
+                            "domain": "facebook.com",
+                            "categories_names": [
+                              "/Online Communities/Social Networks"
+                            ],
+                            "categories_confidence": [
+                              0.91368252038956
+                            ]
+                          },
+                          {
+                            "domain": "serpstat.com",
+                            "categories_names": [
+                              "/Internet & Telecom/Web Services/Search Engine Optimization & Marketing",
+                              "/Internet & Telecom/Web Services/Web Stats & Analytics",
+                              "/Business & Industrial/Advertising & Marketing/Marketing",
+                              "/Computers & Electronics/Software/Business & Productivity Software",
+                              "/Internet & Telecom/Other"
+                            ],
+                            "categories_confidence": [
+                              0.95571535825729,
+                              0.94931191205978,
+                              0.35643520951271,
+                              0.1866105645895,
+                              0.13548009097576
+                            ]
+                          }
+                        ],
+                        "status": "2",
+                        "created_at": "2025-01-21 16:40:12"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    },
+    "/#DomainClassification.getTaskList": {
+      "post": {
+        "tags": [
+          "Domain Classification"
+        ],
+        "summary": "getTaskList",
+        "description": "The `DomainClassification.getTaskList` method retrieves a list of tasks along with their statuses.\n\n\n<!-- theme: success -->\n> **Credits**: This method doesn't spent API Credits.",
+        "operationId": "post-#DomainClassification.getTaskList",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/components/schemas/id"
+                  },
+                  "method": {
+                    "type": "string",
+                    "description": "Should be exact `DomainClassification.getTaskList`"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "page": {
+                        "type": "integer",
+                        "description": "Page number in response"
+                      },
+                      "size": {
+                        "type": "integer",
+                        "description": "Number of results per page in response"
+                      }
+                    },
+                    "required": [
+                      "page",
+                      "size"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "method",
+                  "params"
+                ],
+                "x-examples": {
+                  "Example 1": {
+                    "id": "123",
+                    "method": "DomainClassification.getTaskList",
+                    "params": {
+                      "page": 1,
+                      "size": 20
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "Example 1": {
+                  "value": {
+                    "id": "135",
+                    "method": "DomainClassification.getTaskList",
+                    "params": {
+                      "page": 1,
+                      "size": 20
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/id"
+                    },
+                    "result": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "task_id": {
+                                "type": "string",
+                                "description": "Task identifier"
+                              },
+                              "status": {
+                                "$ref": "#/components/schemas/taskStatus"
+                              },
+                              "created_at": {
+                                "type": "string",
+                                "description": "Task creating date in format `YYYY-MM-DD HH:MM:SS`"
+                              }
+                            },
+                            "required": [
+                              "task_id",
+                              "status",
+                              "created_at"
+                            ]
+                          }
+                        },
+                        "summary_info": {
+                          "type": "object",
+                          "properties": {
+                            "page": {
+                              "type": "integer",
+                              "description": "Page number"
+                            },
+                            "page_total": {
+                              "type": "integer",
+                              "description": "Total number of pages with results"
+                            },
+                            "count": {
+                              "type": "integer",
+                              "description": "Number of results on the current page"
+                            },
+                            "total": {
+                              "type": "integer",
+                              "description": "Total number of results"
+                            }
+                          },
+                          "required": [
+                            "page",
+                            "page_total",
+                            "count",
+                            "total"
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "x-examples": {
+                    "Example 1": {
+                      "id": "123",
+                      "result": {
+                        "data": [
+                          {
+                            "task_id": "833062-0e5a4bec-824d-4e90-9138-0bc5a2303155",
+                            "status": "2",
+                            "created_at": "2025-01-21 16:40:12"
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "page_total": 1,
+                          "count": 20,
+                          "total": 1
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "id": "134",
+                      "result": {
+                        "data": [
+                          {
+                            "task_id": "833062-0e5a4bec-824d-4e90-9138-0bc5a2303155",
+                            "status": "2",
+                            "created_at": "2025-01-21 16:40:12"
+                          }
+                        ],
+                        "summary_info": {
+                          "page": 1,
+                          "page_total": 1,
+                          "count": 20,
+                          "total": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ],
+        "servers": [
+          {
+            "url": "https://api.serpstat.com/v4",
+            "description": "Default server"
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Domain Classification",
+      "description": "Deffered API domain classification"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "token": {
+        "type": "apiKey",
+        "name": "token",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "id": {
+        "type": "string",
+        "title": "id",
+        "description": "Request / response identifier, prodvided from your side, will be mirrored from request to `id` in response. Example \"id\":\"123\"",
+        "x-examples": {
+          "Example 1": {
+            "id": "123"
+          }
+        }
+      },
+      "taskStatus": {
+        "type": "integer",
+        "enum": [
+          1,
+          2,
+          3
+        ],
+        "title": "taskStatus",
+        "description": "Task status\n\n| **Code**  | **Description**  |\n|--|--|\n| 1 | Pending |\n| 2 | Complete |\n| 3 | Error |"
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ]
+}
