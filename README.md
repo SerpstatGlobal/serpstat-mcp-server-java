@@ -1,4 +1,3 @@
-```markdown
 # Serpstat MCP Server
 
 MCP \(Model Context Protocol\) server for integration with Serpstat API, implementing the `SerpstatDomainProcedure.getDomainsInfo` method.
