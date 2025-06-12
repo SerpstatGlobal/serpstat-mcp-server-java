@@ -32,21 +32,6 @@
     ],
     "paths": {
         "/#SerpstatDomainProcedure.getDomainsInfo": {
-            "get": {
-                "description": "New endpoint",
-                "responses": {
-                    "200": {
-                        "description": "New response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "": ""
-                                }
-                            }
-                        }
-                    }
-                }
-            },
             "post": {
                 "summary": "getDomainsInfo",
                 "description": "Method `SerpstatDomainProcedure.getDomainsInfo` provides the summary SEO information for an array of domains for specified search engine database.\n\n<!-- theme: success -->\n> **Credits**: 5 API credits are spent per each domain in response.\n\n<!-- theme: info -->\n> **Note**: Starting June 15, 2025, this method will consume 1 API credit even when no data is available for the requested query. Previously, no credits were consumed for empty results.\n\n",

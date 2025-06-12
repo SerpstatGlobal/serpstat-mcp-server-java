@@ -10,6 +10,8 @@ import io.modelcontextprotocol.spec.McpSchema.ServerCapabilities;
 import com.serpstat.core.ToolRegistry;
 import com.serpstat.core.SerpstatApiClient;
 
+import java.util.Arrays;
+
 /**
  * Главный класс MCP сервера для Serpstat API
  * Архитектура: модульная с автоматической регистрацией инструментов
@@ -38,7 +40,7 @@ public class SerpstatMcpServer {
             server.start();
         } catch (Exception e) {
             System.err.println("Failed to start server: " + e.getMessage());
-            System.err.println(e.getStackTrace());
+            System.err.println(Arrays.toString(e.getStackTrace()));
             System.exit(1);
         }
     }

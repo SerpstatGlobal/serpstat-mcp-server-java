@@ -25,7 +25,7 @@ public class CreditsTools extends BaseToolHandler implements ToolProvider {
 
     @Override
     public List<McpServerFeatures.SyncToolSpecification> getTools() {
-        return Arrays.asList(
+        return List.of(
                 createApiStatsTool()
         );
     }

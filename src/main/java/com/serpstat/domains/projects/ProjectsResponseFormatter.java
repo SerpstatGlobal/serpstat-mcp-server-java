@@ -117,7 +117,7 @@ public class ProjectsResponseFormatter {
             // Project management insights
             ObjectNode insights = mapper.createObjectNode();
 
-            if (dataArray.size() == 0) {
+            if (dataArray.isEmpty()) {
                 insights.put("status", "NO_PROJECTS");
                 insights.put("message", "No projects found");
                 insights.put("recommendation", "Create your first project to start tracking domains");
