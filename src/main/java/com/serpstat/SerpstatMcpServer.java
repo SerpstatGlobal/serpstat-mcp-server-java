@@ -13,8 +13,8 @@ import com.serpstat.core.SerpstatApiClient;
 import java.util.Arrays;
 
 /**
- * Главный класс MCP сервера для Serpstat API
- * Архитектура: модульная с автоматической регистрацией инструментов
+ * Main class for the MCP server for Serpstat API.
+ * Architecture: modular with automatic tool registration.
  */
 public class SerpstatMcpServer {
 
@@ -46,40 +46,40 @@ public class SerpstatMcpServer {
     }
 
     public void start() throws Exception {
-        // Создаем API клиент
-        SerpstatApiClient apiClient = new SerpstatApiClient(apiToken);
+            // Create API client
+            SerpstatApiClient apiClient = new SerpstatApiClient(apiToken);
 
-        // Создаем реестр инструментов и автоматически регистрируем все
-        ToolRegistry toolRegistry = new ToolRegistry(apiClient);
+            // Create a tool registry and automatically register all tools
+            ToolRegistry toolRegistry = new ToolRegistry(apiClient);
 
-        // Создаем STDIO транспорт
-        var transportProvider =new StdioServerTransportProvider(new ObjectMapper());
+            // Create STDIO transport
+            var transportProvider = new StdioServerTransportProvider(new ObjectMapper());
 
-        // Создаем и конфигурируем MCP сервер
-        this.mcpServer = McpServer.sync(transportProvider)
-                .serverInfo("serpstat-mcp-server", "0.0.1")
-                .capabilities(ServerCapabilities.builder()
-                        .tools(true)
-                        //.resources(false,false)
-                        //.prompts(false)
-                        .logging()
-                        .build())
-                .build();
+            // Create and configure an MCP server
+            this.mcpServer = McpServer.sync(transportProvider)
+                    .serverInfo("serpstat-mcp-server", "0.0.1")
+                    .capabilities(ServerCapabilities.builder()
+                            .tools(true)
+                            //.resources(false,false)
+                            //.prompts(false)
+                            .logging()
+                            .build())
+                    .build();
 
-        // Автоматическая регистрация всех инструментов
-        toolRegistry.registerAllTools(mcpServer);
+            // Automatically register all tools
+            toolRegistry.registerAllTools(mcpServer);
 
-        System.err.println("🚀 Serpstat MCP Server started successfully!");
-        System.err.printf("📊 Registered %d tools across %d domains%n",
-                toolRegistry.getToolCount(), toolRegistry.getDomainCount());
-        System.err.println("⏳ Waiting for MCP client connections...");
+            System.err.println("🚀 Serpstat MCP Server started successfully!");
+            System.err.printf("📊 Registered %d tools across %d domains%n",
+                    toolRegistry.getToolCount(), toolRegistry.getDomainCount());
+            System.err.println("⏳ Waiting for MCP client connections...");
 
-        // Graceful shutdown
-        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
+            // Graceful shutdown
+            Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
-        // Блокируем основной поток
-        Thread.currentThread().join();
-    }
+            // Block the main thread
+            Thread.currentThread().join();
+        }
 
     private void shutdown() {
         System.err.println("🛑 Shutting down Serpstat MCP Server...");

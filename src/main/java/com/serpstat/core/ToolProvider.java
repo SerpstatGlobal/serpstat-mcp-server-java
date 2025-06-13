@@ -4,7 +4,7 @@ import io.modelcontextprotocol.server.McpServerFeatures;
 import java.util.List;
 
 /**
- * Базовый интерфейс для всех провайдеров инструментов
+ * Base interface for all tool providers
  */
 public interface ToolProvider {
     String getDomainName();

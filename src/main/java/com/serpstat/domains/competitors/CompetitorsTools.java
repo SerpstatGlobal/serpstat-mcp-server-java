@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Инструменты для анализа конкурентов
+ * Tools for competitor analysis.
  */
 public class CompetitorsTools extends BaseToolHandler implements ToolProvider {
 

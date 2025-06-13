@@ -61,27 +61,30 @@ public class DomainTools extends BaseToolHandler implements ToolProvider {
     }
 
 
-    /// Creates the specification for the domain keywords analysis tool.
-    ///
-    /// Usage examples:
-    ///
-    ///     - Basic keyword analysis:
-    ///     <pre>"Show keywords for nike.com domain in Google US"</pre>
-    ///
-    ///     - Analysis with filters:
-    ///     <pre>"Find keywords for nike.com only in top-10 positions"</pre>
-    ///     
-    ///     - Specific page analysis:
-    ///     <pre>"Show keywords for URL <a href="https://nike.com/soccer">...</a>"</pre>
-    ///
-    ///     - Analysis with exclusions:
-    ///     <pre>"Find keywords for domain, but exclude words 'brand' and 'company'"</pre>
-    ///
-    ///     - Detailed analysis:
-    ///     <pre>"Analyze domain keywords with high difficulty (difficulty > 70)"</pre>
-    ///
-    ///
-    /// @return the specification for the domain keywords analysis tool
+/**
+     * Creates the specification for the domain keywords analysis tool.
+     * <p>
+     * Usage examples:
+     * <ul>
+     *     <li>Basic keyword analysis:<br>
+     *         <pre>"Show keywords for nike.com domain in Google US"</pre>
+     *     </li>
+     *     <li>Analysis with filters:<br>
+     *         <pre>"Find keywords for nike.com only in top-10 positions"</pre>
+     *     </li>
+     *     <li>Specific page analysis:<br>
+     *         <pre>"Show keywords for URL &lt;a href=&quot;https://nike.com/soccer&quot;&gt;...&lt;/a&gt;"</pre>
+     *     </li>
+     *     <li>Analysis with exclusions:<br>
+     *         <pre>"Find keywords for domain, but exclude words 'brand' and 'company'"</pre>
+     *     </li>
+     *     <li>Detailed analysis:<br>
+     *         <pre>"Analyze domain keywords with high difficulty (difficulty &gt; 70)"</pre>
+     *     </li>
+     * </ul>
+     *
+     * @return the specification for the domain keywords analysis tool
+     */
     private McpServerFeatures.SyncToolSpecification createDomainKeywordsTool() {
         return new McpServerFeatures.SyncToolSpecification(
                 new Tool(

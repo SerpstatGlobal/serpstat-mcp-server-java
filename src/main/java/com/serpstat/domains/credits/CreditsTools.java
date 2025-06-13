@@ -5,7 +5,6 @@ import io.modelcontextprotocol.server.McpServerFeatures;
 import io.modelcontextprotocol.server.McpSyncServerExchange;
 import io.modelcontextprotocol.spec.McpSchema.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

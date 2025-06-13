@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-///  Response model of API method `SerpstatDomainProcedure.getDomainCompetitors`
-///  Returns SEO metrics of domain competitors.
-///  Each competitor in response costs 5 api credits
-///  @link <a href="https://api-docs.serpstat.com/docs/serpstat-public-api/34gt6x6a3v4wp-get-domain-competitors">
-///  Documentation for SerpstatDomainProcedure.getDomainCompetitors</a>
+/**
+ * Response model of API method {@code SerpstatDomainProcedure.getDomainCompetitors}.
+ * Returns SEO metrics of domain competitors.
+ * Each competitor in response costs 5 API credits.
+ * @see <a href="https://api-docs.serpstat.com/docs/serpstat-public-api/34gt6x6a3v4wp-get-domain-competitors">
+ * Documentation for SerpstatDomainProcedure.getDomainCompetitors</a>
+ */
 
 @Setter
 @Getter

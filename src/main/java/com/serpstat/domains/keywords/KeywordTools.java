@@ -29,7 +29,6 @@ public class KeywordTools extends BaseToolHandler implements ToolProvider {
         return Arrays.asList(
                 createKeywordResearchTool(),
                 createKeywordDifficultyTool()
-                // TODO: добавить остальные методы
         );
     }
 

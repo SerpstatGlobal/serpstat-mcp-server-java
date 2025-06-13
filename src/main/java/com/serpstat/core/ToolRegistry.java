@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Реестр всех MCP инструментов с автоматической регистрацией
+ * Registry of all MCP tools with automatic registration
  */
 public class ToolRegistry {
 
@@ -26,7 +26,7 @@ public class ToolRegistry {
     }
 
     /**
-     * Инициализация всех провайдеров инструментов
+     * Initialization of all tool providers
      */
     private List<ToolProvider> initializeProviders() {
         List<ToolProvider> providers = new ArrayList<>();
@@ -37,15 +37,15 @@ public class ToolRegistry {
         providers.add(new BacklinksTools(apiClient));
         providers.add(new CreditsTools(apiClient));
         providers.add(new ProjectsTools(apiClient));
-       // providers.add(new KeywordTools(apiClient));
-       // providers.add(new CompetitorsTools(apiClient));
+        // providers.add(new KeywordTools(apiClient));
+        // providers.add(new CompetitorsTools(apiClient));
         // TODO: добавить остальные домены
 
         return providers;
     }
 
     /**
-     * Автоматическая регистрация всех инструментов в MCP сервере
+     * Automatic registration of all tools in the MCP server
      */
     public void registerAllTools(McpSyncServer mcpServer) {
         for (ToolProvider provider : providers) {

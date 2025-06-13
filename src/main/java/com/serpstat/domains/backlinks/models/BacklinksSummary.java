@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-///  Response model of API method `SerpstatBacklinksProcedure.getSummaryV2`
-///  Gives you general information about link profile: number of external links,
-///  referring IP addresses and subnets, number of referring domains and subdomains,
-///  domain authority indicator and types of referring links.
-///  Costs 5 api credits
-///  @link <a href="https://api-docs.serpstat.com/docs/serpstat-public-api/ylg7q8n96yjci-get-summary-v2">
-///  Documentation for SerpstatBacklinksProcedure.getSummaryV2</a>
+/**
+ * Response model of API method {@code SerpstatBacklinksProcedure.getSummaryV2}.
+ * Provides general information about the link profile: number of external links,
+ * referring IP addresses and subnets, number of referring domains and subdomains,
+ * domain authority indicator, and types of referring links.
+ * Costs 5 API credits.
+ * @see <a href="https://api-docs.serpstat.com/docs/serpstat-public-api/ylg7q8n96yjci-get-summary-v2">
+ * Documentation for SerpstatBacklinksProcedure.getSummaryV2</a>
+ */
 
 @Setter
 @Getter

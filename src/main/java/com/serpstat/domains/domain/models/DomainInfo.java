@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-///  Response model of API method `SerpstatDomainProcedure.getDomainsInfo`
-///  Returns SEO metrics of domains.
-///  Each domain in response costs 5 api credits
-///  @link <a href="https://api-docs.serpstat.com/docs/serpstat-public-api/34gt6x6a3v4wp-get-domains-info">
-///  Documentation for SerpstatDomainProcedure.getDomainsInfo</a>
+/**
+ * Response model of API method {@code SerpstatDomainProcedure.getDomainsInfo}.
+ * Returns SEO metrics of domains.
+ * Each domain in response costs 5 API credits.
+ * @see <a href="https://api-docs.serpstat.com/docs/serpstat-public-api/34gt6x6a3v4wp-get-domains-info">
+ * Documentation for SerpstatDomainProcedure.getDomainsInfo</a>
+ */
 
 @Setter
 @Getter
