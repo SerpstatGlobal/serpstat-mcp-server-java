@@ -23,6 +23,8 @@ public class RateLimiter {
         this.windowStart = Instant.now();
     }
 
+    // I think here can be a small bug like we had in php if there will be multiple threads operating essentially
+    // bypassing the limit, but if this happens our serpstat api should return limit error so it should be fine
     public synchronized void waitIfNeeded() {
         Instant now = Instant.now();
         if (Duration.between(windowStart, now).compareTo(timeWindow) > 0) {
