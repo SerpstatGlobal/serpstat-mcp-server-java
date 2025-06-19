@@ -37,6 +37,7 @@ public class BacklinksSummaryResponseFormatter {
             summary.put("referring_domains", dataNode.path("referring_domains").asInt(0));
             summary.put("dofollow_backlinks", dataNode.path("dofollow_backlinks").asInt(0));
             summary.put("nofollow_backlinks", dataNode.path("nofollow_backlinks").asInt(0));
+            // typo in sersptat?
             summary.put("serpstat_domain_rank", dataNode.path("sersptat_domain_rank").asInt(0));
 
             // Quality metrics
@@ -63,9 +64,13 @@ public class BacklinksSummaryResponseFormatter {
 
             // Quality indicators
             ObjectNode quality = mapper.createObjectNode();
+
+            // is it correct default? wouldn't it influence the percentage calculation? (I get that it avoids division 0)
             int totalBacklinks = dataNode.path("backlinks").asInt(1);
             int dofollowBacklinks = dataNode.path("dofollow_backlinks").asInt(0);
+            // is it correct default? wouldn't it influence the percentage calculation? (I get that it avoids division 0)
             int referringDomains = dataNode.path("referring_domains").asInt(1);
+            // typo in sersptat?
             int serpstatDomainRank = dataNode.path("sersptat_domain_rank").asInt(0);
 
             double dofollowRatio = (double) dofollowBacklinks / totalBacklinks * 100;
@@ -74,6 +79,7 @@ public class BacklinksSummaryResponseFormatter {
             quality.put("total_backlinks", totalBacklinks);
             quality.put("referring_domains", referringDomains);
             quality.put("serpstat_domain_rank", serpstatDomainRank);
+            // a little suspicious, what format are we trying to achieve? I think we can lose some info here
             quality.put("dofollow_percentage", Math.round(dofollowRatio * 100.0) / 100.0);
             quality.put("domain_diversity_percentage", Math.round(diversityRatio * 100.0) / 100.0);
             quality.put("avg_backlinks_per_domain", Math.round((double) totalBacklinks / referringDomains * 100.0) / 100.0);

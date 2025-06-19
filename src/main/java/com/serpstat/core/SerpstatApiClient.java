@@ -27,6 +27,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class SerpstatApiClient {
 
+    // good candidates for some property file or just a class with global constants for ease of dev, test
+    // we already have some util to work with config (version I believe)
     private static final String SERPSTAT_API_URL = "https://api.serpstat.com/v4";
     private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(30);
 
@@ -66,6 +68,8 @@ public class SerpstatApiClient {
                 .build();
         this.version = VersionUtils.getVersion();
         this.objectMapper = new ObjectMapper();
+        // already discussed on call, there are plenty of main plans that have 1 rps, maybe can be moved to some config too
+        // can cause problems so will need some adjustments
         this.rateLimiter = new RateLimiter(10, Duration.ofSeconds(1));
     }
 
@@ -84,7 +88,6 @@ public class SerpstatApiClient {
     }
 
     /**
-     * Универсальный метод для вызова любого Serpstat API метода
      * Universal method for calling any Serpstat API method with proper UTF-8 encoding
      */
     public SerpstatApiResponse callMethod(String method, Map<String, Object> params)

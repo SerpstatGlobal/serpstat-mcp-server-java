@@ -25,8 +25,11 @@ public class SerpstatMcpServer {
         this.apiToken = apiToken;
     }
 
+    // personally I would like to locate main in other class, so I would have clear entrypoint and logic for env variable and
+    // server start with possible failure handling in other place, separating it from SerpstatMcpServer, it would be
+    // responsible only for start and shutdown
     public static void main(String[] args) {
-
+        // this is an unsave operation, getenv could fail, may try catch it to be safe, could introduce var for env name
         String apiToken = System.getenv("SERPSTAT_API_TOKEN");
         if (apiToken == null || apiToken.isEmpty()) {
             System.err.println("Error: Environment variable SERPSTAT_API_TOKEN is not set. Check README.md for instructions.");
@@ -57,9 +60,10 @@ public class SerpstatMcpServer {
 
             // Create and configure an MCP server
             this.mcpServer = McpServer.sync(transportProvider)
-                    .serverInfo("serpstat-mcp-server", "0.0.1")
+                    .serverInfo("serpstat-mcp-server", "0.0.1") // version is hardcoded, but I believe we have it in config?
                     .capabilities(ServerCapabilities.builder()
                             .tools(true)
+                            // can it be deleted if we don't plan to use it yet
                             //.resources(false,false)
                             //.prompts(false)
                             .logging()
@@ -74,6 +78,7 @@ public class SerpstatMcpServer {
                     toolRegistry.getToolCount(), toolRegistry.getDomainCount());
             System.err.println("⏳ Waiting for MCP client connections...");
 
+            // below is basically a panic hook and an event loop to keep the app alive? just curious, interesting
             // Graceful shutdown
             Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 
