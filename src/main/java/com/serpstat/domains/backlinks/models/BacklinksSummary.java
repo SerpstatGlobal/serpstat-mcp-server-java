@@ -21,6 +21,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuppressWarnings("unused")
+// why models are unused? there is some magic mapping between these objects and mcp server, and it can discover them
+// or is this a discarded idea
+// I am a little lost
 public class BacklinksSummary {
 
         @JsonProperty("sersptat_domain_rank")
